@@ -9,9 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        green: "#50AB8D",
-        pink: "#ecbcd3",
-        purple: "#814f70",
+        card: "#788fd6",
+        button: "#8ea8ff",
       },
     },
   },
