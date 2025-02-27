@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { Logo } from "@/app/ui/main/logo";
 import { motion } from "framer-motion";
-import { useState } from "react";
+// import Button from "@/app/ui/main/button";
 import ParticlesBackground from "@/app/ui/main/particlesBackground";
 
 export default function Home() {
@@ -13,8 +14,8 @@ export default function Home() {
       <main className="w-full">
         <Logo complete={() => setShowButtons(true)} />
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={showButtons ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, y: 40 }}
+          animate={showButtons ? { opacity: 1, y: 40 } : {}}
           transition={{ duration: 1, delay: 1 }}
           className="flex flex-col gap-5 justify-center items-center w-full"
         >
