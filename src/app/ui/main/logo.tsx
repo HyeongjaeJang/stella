@@ -12,7 +12,8 @@ export const Logo = ({ complete }: { complete: () => void }) => {
 
   return (
     <motion.div
-      animate={start ? { y: -30 } : { y: 0 }}
+      animate={start ? { y: -30 } : {}}
+      initial={{ y: 40 }}
       transition={{ duration: 1, ease: "easeInOut" }}
       onAnimationComplete={complete}
       className="flex justify-center items-center"

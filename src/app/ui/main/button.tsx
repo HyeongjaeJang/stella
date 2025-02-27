@@ -7,7 +7,7 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
       <motion.div
         initial={{ opacity: 0, y: 0 }}
         animate={showButtons ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1, delay: 1 }}
+        transition={{ duration: 1, delay: 0 }}
         className="flex flex-col gap-5 justify-center items-center w-full"
       >
         <button className="bg-button w-1/2 p-3 rounded-xl text-white font-bold text-xl">
