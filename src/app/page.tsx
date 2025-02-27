@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Logo } from "@/app/ui/main/logo";
-import { motion } from "framer-motion";
-// import Button from "@/app/ui/main/button";
+import Button from "@/app/ui/main/button";
 import ParticlesBackground from "@/app/ui/main/particlesBackground";
 
 export default function Home() {
@@ -13,19 +12,7 @@ export default function Home() {
     <div className="h-screen flex justify-center items-center">
       <main className="w-full">
         <Logo complete={() => setShowButtons(true)} />
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={showButtons ? { opacity: 1, y: 40 } : {}}
-          transition={{ duration: 1, delay: 1 }}
-          className="flex flex-col gap-5 justify-center items-center w-full"
-        >
-          <button className="bg-button w-1/2 p-3 rounded-xl text-white font-bold text-xl">
-            Sign Up
-          </button>
-          <button className="bg-button w-1/2 p-3 rounded-xl text-white font-bold text-xl">
-            Log In
-          </button>
-        </motion.div>
+        <Button showButtons={showButtons} />
         <ParticlesBackground />
       </main>
     </div>
