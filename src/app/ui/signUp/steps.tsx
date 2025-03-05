@@ -7,7 +7,7 @@ import Step2 from "@/app/ui/signUp/steps/step2";
 import Step5 from "./steps/step5";
 import Step3 from "./steps/step3";
 
-export default function Steps() {
+export default function Steps({ action }: { action: () => void }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "",
@@ -62,6 +62,12 @@ export default function Steps() {
             />
           )}
         </AnimatePresence>
+        <button
+          onClick={action}
+          className="absolute top-3 right-3 text-gray-500 text-xl"
+        >
+          ✖
+        </button>
       </div>
     </div>
   );

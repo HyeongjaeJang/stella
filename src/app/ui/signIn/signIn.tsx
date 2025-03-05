@@ -1,9 +1,7 @@
 "use client";
-
 import { useState } from "react";
-import { motion } from "framer-motion";
 
-export default function SignIn({ close }: { close: () => void }) {
+export default function SignIn({ action }: { action: () => void }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -13,7 +11,6 @@ export default function SignIn({ close }: { close: () => void }) {
     setForm((prev) => ({ ...prev, [name]: value }));
 
     if (name === "email") {
-      // verifying email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setError(emailRegex.test(value) ? "" : "Invalid email format");
     }
@@ -55,13 +52,16 @@ export default function SignIn({ close }: { close: () => void }) {
             </button>
           </div>
 
-          <button className="mt-4 bg-blue-500 w-full p-2 rounded-md text-white font-bold">
+          <button
+            className="mt-4 bg-button w-full p-2 rounded-md text-white font-bold"
+            onClick={() => console.log(form)}
+          >
             Sign In
           </button>
         </div>
 
         <button
-          onClick={close}
+          onClick={action}
           className="absolute top-3 right-3 text-gray-500 text-xl"
         >
           ✖

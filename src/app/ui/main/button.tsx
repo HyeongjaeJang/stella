@@ -10,8 +10,16 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
 
   return (
     <>
-      {showSignUp && createPortal(<Steps />, document.body)}
-      {showSignIn && createPortal(<SignIn close={() => setShowSignIn(false)} />, document.body)}
+      {showSignUp &&
+        createPortal(
+          <Steps action={() => setShowSignUp(!showSignUp)} />,
+          document.body,
+        )}
+      {showSignIn &&
+        createPortal(
+          <SignIn action={() => setShowSignIn(!showSignIn)} />,
+          document.body,
+        )}
 
       <motion.div
         initial={{ opacity: 0, y: 0 }}
