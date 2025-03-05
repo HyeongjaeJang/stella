@@ -1,7 +1,13 @@
 "use client";
 import { useState } from "react";
 
-export default function SignIn({ action }: { action: () => void }) {
+export default function SignIn({
+  action,
+  switchToSignUp,
+}: {
+  action: () => void;
+  switchToSignUp: () => void;
+}) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -59,6 +65,17 @@ export default function SignIn({ action }: { action: () => void }) {
             Sign In
           </button>
         </div>
+
+        {/* ✅ "Don't have an account? Sign up!" 링크 추가 */}
+        <p className="mt-4 text-sm">
+          Don't have an account?{" "}
+          <button
+            className="text-blue-500 font-semibold underline"
+            onClick={switchToSignUp}
+          >
+            Sign up!
+          </button>
+        </p>
 
         <button
           onClick={action}
