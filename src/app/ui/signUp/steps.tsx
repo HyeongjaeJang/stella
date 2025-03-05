@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Step1 from "@/app/ui/signUp/steps/step1";
 import Step2 from "@/app/ui/signUp/steps/step2";
+import Step5 from "./steps/step5";
 import Step3 from "./steps/step3";
 
 export default function Steps() {
@@ -11,6 +12,7 @@ export default function Steps() {
   const [form, setForm] = useState({
     name: "",
     dateOfBirth: "",
+    time: "",
     gender: "",
   });
 
@@ -22,7 +24,7 @@ export default function Steps() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, 6));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
@@ -36,7 +38,6 @@ export default function Steps() {
               nextStep={() => nextStep()}
             />
           )}
-
           {step === 2 && (
             <Step2
               form={form}
@@ -45,9 +46,16 @@ export default function Steps() {
               prevStep={() => prevStep()}
             />
           )}
-
           {step === 3 && (
             <Step3
+              form={form}
+              action={handleChange}
+              nextStep={() => nextStep()}
+              prevStep={() => prevStep()}
+            />
+          )}
+          {step === 4 && (
+            <Step5
               form={form}
               action={handleChange}
               prevStep={() => prevStep()}
