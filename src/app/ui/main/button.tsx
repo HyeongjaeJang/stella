@@ -8,6 +8,12 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
 
+  // ✅ Sign In → Sign Up으로 전환하는 함수 추가
+  const switchToSignUp = () => {
+    setShowSignIn(false); // 현재 Sign In 모달 닫기
+    setShowSignUp(true); // Sign Up 모달 열기
+  };
+
   return (
     <>
       {showSignUp &&
@@ -17,7 +23,10 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
         )}
       {showSignIn &&
         createPortal(
-          <SignIn action={() => setShowSignIn(!showSignIn)} />,
+          <SignIn
+            action={() => setShowSignIn(!showSignIn)}
+            switchToSignUp={switchToSignUp} // ✅ Sign Up으로 전환하는 함수 전달
+          />,
           document.body,
         )}
 
@@ -37,7 +46,7 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
           onClick={() => setShowSignIn(!showSignIn)}
           className="bg-button w-1/2 p-3 rounded-xl text-white font-bold text-xl"
         >
-          Log In
+          Sign In
         </button>
       </motion.div>
     </>
