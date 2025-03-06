@@ -20,7 +20,7 @@ const Step2 = ({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
       >
-        <h2 className="text-lg font-semibold mb-2">Step 2/3</h2>
+        <h2 className="text-lg font-semibold mb-2">Step 2/5</h2>
         <p>When is your date of birth?</p>
         <input
           type="date"
