@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 
 export default function SignIn({
@@ -67,15 +66,13 @@ export default function SignIn({
         </div>
 
         {/* ✅ "Don't have an account? Sign up!" 링크 추가 */}
-        <p className="mt-4 text-sm">
-          Don't have an account?{" "}
-          <button
-            className="text-blue-500 font-semibold underline"
-            onClick={switchToSignUp}
-          >
-            Sign up!
-          </button>
-        </p>
+        <p className="mt-4 text-sm">{"Don't have an account?"}</p>
+        <button
+          className="text-blue-500 font-semibold underline"
+          onClick={switchToSignUp}
+        >
+          Sign up!
+        </button>
 
         <button
           onClick={action}
