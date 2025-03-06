@@ -18,7 +18,7 @@ const Step5 = ({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
       >
-        <h2 className="text-lg font-semibold mb-2">Step 3/3</h2>
+        <h2 className="text-lg font-semibold mb-2">Step 5/5</h2>
         <p>What is your gender?</p>
         <select
           onChange={action}
