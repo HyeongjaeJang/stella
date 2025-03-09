@@ -21,25 +21,27 @@ const Step4 = ({
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-    setCountries(getCountries());
+    getCountries().then((data) => setCountries(data));
   }, []);
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCountryChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
-    setStates(getStates(countryCode));
+    const states = await getStates(countryCode);
+    setStates(states);
     setCities([]);
     setSelectedCity("");
   };
 
-  const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStateChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const stateCode = e.target.value;
     setSelectedState(stateCode);
-    setCities(getCities(selectedCountry, stateCode));
+    const cities = await getCities(selectedCountry, stateCode);
+    setCities(cities);
     setSelectedCity("");
   };
 
@@ -59,72 +61,68 @@ const Step4 = ({
       >
         <h2 className="text-lg font-semibold mb-2">Step 4/5</h2>
         <p>Where were you born?</p>
-
-        {isClient && (
-          <div>
-            <label className="block font-semibold mt-3">Country</label>
-            <select
-              name="country"
-              value={selectedCountry}
-              onChange={handleCountryChange}
-              className="border p-2 w-full mt-1 rounded-md"
-            >
-              <option value="" disabled>
-                Select Country
+        <div>
+          <label className="block font-semibold mt-3">Country</label>
+          <select
+            name="country"
+            value={selectedCountry}
+            onChange={handleCountryChange}
+            className="border p-2 w-full mt-1 rounded-md"
+          >
+            <option value="" disabled>
+              Select Country
+            </option>
+            {countries.map((country) => (
+              <option key={country.isoCode} value={country.isoCode}>
+                {country.name}
               </option>
-              {countries.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
-                  {country.name}
+            ))}
+          </select>
+
+          {selectedCountry && (
+            <div>
+              <label className="block font-semibold mt-3">State</label>
+              <select
+                name="state"
+                value={selectedState}
+                onChange={handleStateChange}
+                className="border p-2 w-full mt-1 rounded-md"
+                disabled={states.length === 0}
+              >
+                <option value="" disabled>
+                  Select State
                 </option>
-              ))}
-            </select>
-
-            {selectedCountry && (
-              <div>
-                <label className="block font-semibold mt-3">State</label>
-                <select
-                  name="state"
-                  value={selectedState}
-                  onChange={handleStateChange}
-                  className="border p-2 w-full mt-1 rounded-md"
-                  disabled={states.length === 0}
-                >
-                  <option value="" disabled>
-                    Select State
+                {states.map((state) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
                   </option>
-                  {states.map((state) => (
-                    <option key={state.isoCode} value={state.isoCode}>
-                      {state.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+                ))}
+              </select>
+            </div>
+          )}
 
-            {selectedState && (
-              <div>
-                <label className="block font-semibold mt-3">City</label>
-                <select
-                  name="city"
-                  value={selectedCity}
-                  onChange={handleCityChange}
-                  className="border p-2 w-full mt-1 rounded-md"
-                  disabled={cities.length === 0}
-                >
-                  <option value="" disabled>
-                    Select City
+          {selectedState && (
+            <div>
+              <label className="block font-semibold mt-3">City</label>
+              <select
+                name="city"
+                value={selectedCity}
+                onChange={handleCityChange}
+                className="border p-2 w-full mt-1 rounded-md"
+                disabled={cities.length === 0}
+              >
+                <option value="" disabled>
+                  Select City
+                </option>
+                {cities.map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
                   </option>
-                  {cities.map((city) => (
-                    <option key={city.name} value={city.name}>
-                      {city.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-        )}
-
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
         <div className="flex justify-between mt-4">
           <button className="bg-gray-300 p-2 rounded-md" onClick={prevStep}>
             Back
