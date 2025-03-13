@@ -10,7 +10,7 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
 
-  // ✅ Sign In → Sign Up으로 전환하는 함수 추가
+  // Sign In → Sign Up 전환
   const switchToSignUp = () => {
     setShowSignIn(false); // 현재 Sign In 모달 닫기
     setShowSignUp(true); // Sign Up 모달 열기
