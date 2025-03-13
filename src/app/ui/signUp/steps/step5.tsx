@@ -1,11 +1,13 @@
+"use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { createUser } from "@/app/lib/actions";
 
 const Step5 = ({
   form,
   action,
   prevStep,
-  onSubmit, // 회원가입 완료시 실행 (모달 닫기)
+  close,
 }: {
   form: {
     name: string;
@@ -16,7 +18,7 @@ const Step5 = ({
   };
   action: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   prevStep: () => void;
-  onSubmit: () => void; // 모달 닫기로
+  close: () => void;
 }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -25,41 +27,42 @@ const Step5 = ({
     setLoading(true);
     setMessage("");
 
-    console.log(form);
+    const user = {
+      name: form.name,
+      email: "test@test.com",
+      password: "test1234",
+      birth_date: form.dateOfBirth,
+      birth_time: form.time,
+      gender: form.gender,
+      city_country: form.city,
+      z_sign: "testsign",
+    };
 
-    // const response = await fetch("/api/users", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     name: form.name,
-    //     email: `${form.name.toLowerCase()}@example.com`, // 임시 이메일 값 (UI에서 입력받도록 수정 가능)
-    //     password: "test1234", // 임시 비밀번호 값
-    //     birth_date: form.dateOfBirth,
-    //     birth_time: form.time,
-    //     city_country: form.city,
-    //     gender: form.gender,
-    //     z_sign: "Unknown", // 별자리 자동 계산 가능
-    //   }),
-    // });
-
-    // const data = await response.json();
-    // setLoading(false);
-
-    // if (response.ok) {
-    //   setMessage("🎉 회원가입 성공!");
-    //   setTimeout(() => {
-    //     onSubmit(); // 모달 닫기 실행
-    //   }, 2000);
-    // } else {
-    //   setMessage(`❌ 오류: ${data.message}`);
-    // }
+    const res = await createUser(user);
+    if (res.success) {
+      console.log(res);
+      setLoading(false);
+      close();
+    } else {
+      setMessage(res.message || "");
+    }
   };
 
   return (
-    <motion.div key="step5" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+    <motion.div
+      key="step5"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+    >
       <h2 className="text-lg font-semibold mb-2">Step 5/5</h2>
       <p>What is your gender?</p>
-      <select onChange={action} name="gender" value={form.gender} className="border p-2 w-full mt-3">
+      <select
+        onChange={action}
+        name="gender"
+        value={form.gender}
+        className="border p-2 w-full mt-3"
+      >
         <option value="" disabled>
           Select your gender
         </option>
@@ -70,7 +73,11 @@ const Step5 = ({
         <button className="bg-gray-300 p-2 rounded-md" onClick={prevStep}>
           Back
         </button>
-        <button className="bg-purple-500 text-white p-2 rounded-md" onClick={handleSubmit} disabled={loading}>
+        <button
+          className="bg-purple-500 text-white p-2 rounded-md"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
           {loading ? "Submitting..." : "Submit"}
         </button>
       </div>
@@ -80,3 +87,4 @@ const Step5 = ({
 };
 
 export default Step5;
+

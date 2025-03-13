@@ -1,6 +1,5 @@
-import knex from "knex";
-import config from "../../../knexfile";
+import { PrismaClient } from "@prisma/client";
 
-const db = knex(config.development);
+const client = new PrismaClient();
 
-export default db;
+export default client;
