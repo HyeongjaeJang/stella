@@ -21,7 +21,7 @@ const Step3 = ({
         exit={{ opacity: 0, y: -10 }}
       >
         <h2 className="text-lg font-semibold mb-2">Step 3/5</h2>
-        <p>When is your date of birth?</p>
+        <p>When is your time of birth?</p>
         <input
           type="time"
           name="time"
