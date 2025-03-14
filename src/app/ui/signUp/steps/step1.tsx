@@ -18,7 +18,7 @@ const Step1 = ({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
       >
-        <h2 className="text-lg font-semibold mb-2">Step 1/5</h2>
+        <h2 className="text-lg font-semibold mb-2">Step 1/6</h2>
         <p>What is your name?</p>
         <input
           type="text"

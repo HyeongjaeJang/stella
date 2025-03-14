@@ -1,6 +1,7 @@
 "use server";
 
 import client from "./db";
+import argon2 from "argon2";
 
 export async function createUser(userData: {
   name: string;
@@ -21,12 +22,14 @@ export async function createUser(userData: {
       throw new Error("이미 존재하는 이메일입니다.");
     }
 
+    const hashedPassword = await argon2.hash(userData.password);
+
     // 유저 생성
     const newUser = await client.user.create({
       data: {
         name: userData.name,
         email: userData.email,
-        password: userData.password,
+        password: hashedPassword,
         birthDate: userData.birth_date ? new Date(userData.birth_date) : null,
         birthTime: userData.birth_time
           ? new Date(`1970-01-01T${userData.birth_time}Z`)
@@ -42,7 +45,7 @@ export async function createUser(userData: {
     return { success: true, userId: newUserId };
   } catch (error) {
     console.error("❌ 회원가입 오류:", error);
-    return { success: false, message: (error as Error).message };
+    return { success: false, message: "error occured! something went wrong." };
   }
 }
 

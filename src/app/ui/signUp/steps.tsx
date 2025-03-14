@@ -7,11 +7,14 @@ import Step2 from "@/app/ui/signUp/steps/step2";
 import Step3 from "@/app/ui/signUp/steps/step3";
 import Step4 from "@/app/ui/signUp/steps/step4";
 import Step5 from "@/app/ui/signUp/steps/step5";
+import Step6 from "@/app/ui/signUp/steps/step6";
 
 export default function Steps({ action }: { action: () => void }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "",
+    email: "",
+    password: "",
     dateOfBirth: "",
     time: "",
     city: "",
@@ -23,6 +26,7 @@ export default function Steps({ action }: { action: () => void }) {
   ) => {
     e.preventDefault();
     const { name, value } = e.target;
+
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -30,7 +34,7 @@ export default function Steps({ action }: { action: () => void }) {
     setForm((prev) => ({ ...prev, city: `${country}, ${city}` }));
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 6));
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, 7));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
@@ -58,13 +62,21 @@ export default function Steps({ action }: { action: () => void }) {
           )}
           {step === 4 && (
             <Step4
-              action={handleSelectChange}
+              form={form}
+              action={handleChange}
               nextStep={nextStep}
               prevStep={prevStep}
             />
           )}
           {step === 5 && (
             <Step5
+              action={handleSelectChange}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 6 && (
+            <Step6
               form={form}
               action={handleChange}
               prevStep={prevStep}
