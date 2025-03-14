@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const Step1 = ({
@@ -10,6 +10,20 @@ const Step1 = ({
   action: (e: React.ChangeEvent<HTMLInputElement>) => void;
   nextStep: () => void;
 }) => {
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const checkEmpty = () => {
+    if (form.name.length <= 0) {
+      setError(true);
+      setErrorMessage("Name cannot be empty");
+      return false;
+    } else {
+      nextStep();
+      return true;
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -26,11 +40,15 @@ const Step1 = ({
           value={form.name}
           placeholder="Enter name"
           className="border p-2 w-full mt-3"
-          onChange={action}
+          onChange={(e) => {
+            action(e);
+            setError(false);
+          }}
         />
+        {error && <p className="text-red-500">{errorMessage}</p>}
         <button
           className="mt-4 bg-purple-300 w-full p-2 rounded-md"
-          onClick={nextStep}
+          onClick={checkEmpty}
         >
           Next
         </button>

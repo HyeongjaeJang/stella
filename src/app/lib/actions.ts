@@ -19,7 +19,7 @@ export async function createUser(userData: {
       where: { email: userData.email },
     });
     if (existingUser) {
-      throw new Error("이미 존재하는 이메일입니다.");
+      return { success: false, message: "이미 존재하는 이메일입니다." };
     }
 
     const hashedPassword = await argon2.hash(userData.password);

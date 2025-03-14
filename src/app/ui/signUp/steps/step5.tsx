@@ -35,6 +35,14 @@ const Step5 = ({
     setStates(states);
     setCities([]);
     setSelectedCity("");
+    if (states.length === 0) {
+      const countryName =
+        countries.find((c) => c.isoCode === countryCode)?.name || "";
+      setSelectedCity(countryName);
+      action(countryCode, countryName);
+    } else {
+      setSelectedCity("");
+    }
   };
 
   const handleStateChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -79,7 +87,7 @@ const Step5 = ({
             ))}
           </select>
 
-          {selectedCountry && (
+          {selectedCountry && states.length > 0 && (
             <div>
               <label className="block font-semibold mt-3">State</label>
               <select
