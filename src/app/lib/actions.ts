@@ -30,13 +30,23 @@ export async function createUser(userData: {
         name: userData.name,
         email: userData.email,
         password: hashedPassword,
-        birthDate: userData.birth_date ? new Date(userData.birth_date) : null,
-        birthTime: userData.birth_time
+        birth_date: userData.birth_date ? new Date(userData.birth_date) : null, // ✅ 수정됨
+        birth_time: userData.birth_time
           ? new Date(`1970-01-01T${userData.birth_time}Z`)
           : null,
         gender: userData.gender,
-        cityCountry: userData.city_country,
-        zSign: userData.z_sign,
+        city_country: userData.city_country,
+        z_sign: userData.z_sign,
+        // name: userData.name,
+        // email: userData.email,
+        // password: hashedPassword,
+        // birthDate: userData.birth_date ? new Date(userData.birth_date) : null,
+        // birthTime: userData.birth_time
+        //   ? new Date(`1970-01-01T${userData.birth_time}Z`)
+        //   : null,
+        // gender: userData.gender,
+        // cityCountry: userData.city_country,
+        // zSign: userData.z_sign,
       },
     });
 
