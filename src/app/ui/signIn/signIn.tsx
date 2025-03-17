@@ -65,8 +65,7 @@ export default function SignIn({
           </button>
         </div>
 
-        {/* ✅ "Don't have an account? Sign up!" 링크 추가 */}
-        <p className="mt-4 text-sm">{"Don't have an account?"}</p>
+        {/* Added "Don't have an account? Sign up!" link */}        <p className="mt-4 text-sm">{"Don't have an account?"}</p>
         <button
           className="text-blue-500 font-semibold underline"
           onClick={switchToSignUp}
