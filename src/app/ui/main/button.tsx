@@ -10,24 +10,29 @@ const Button = ({ showButtons }: { showButtons: boolean }) => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
 
-  // Sign In → Sign Up 전환
+  // Switch from Sign In to Sign Up
   const switchToSignUp = () => {
-    setShowSignIn(false); // 현재 Sign In 모달 닫기
-    setShowSignUp(true); // Sign Up 모달 열기
+    setShowSignIn(false); // Close current Sign In modal
+    setShowSignUp(true); // Open Sign Up modal
+  };
+  // Close Sign Up modal after completing registration
+  const closeSignUp = () => {
+    setShowSignUp(false);
   };
 
   return (
     <>
       {showSignUp &&
         createPortal(
-          <Steps action={() => setShowSignUp(!showSignUp)} />,
+          <Steps action={closeSignUp} />, // Close modal after successful sign-up
           document.body,
         )}
+
       {showSignIn &&
         createPortal(
           <SignIn
             action={() => setShowSignIn(!showSignIn)}
-            switchToSignUp={switchToSignUp} // ✅ Sign Up으로 전환하는 함수 전달
+            switchToSignUp={switchToSignUp} // Pass function to switch to Sign Up
           />,
           document.body,
         )}

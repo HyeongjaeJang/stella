@@ -14,39 +14,29 @@ export async function createUser(userData: {
   z_sign: string;
 }) {
   try {
-    // 이메일 중복 체크
+    // Check for duplicate email
     const existingUser = await client.user.findFirst({
       where: { email: userData.email },
     });
     if (existingUser) {
-      return { success: false, message: "이미 존재하는 이메일입니다." };
+      return { success: false, message: "Email already exists." };
     }
 
     const hashedPassword = await argon2.hash(userData.password);
 
-    // 유저 생성
+    // Create a new user
     const newUser = await client.user.create({
       data: {
         name: userData.name,
         email: userData.email,
         password: hashedPassword,
-        birth_date: userData.birth_date ? new Date(userData.birth_date) : null, // ✅ 수정됨
+        birth_date: userData.birth_date ? new Date(userData.birth_date) : null,
         birth_time: userData.birth_time
           ? new Date(`1970-01-01T${userData.birth_time}Z`)
           : null,
         gender: userData.gender,
         city_country: userData.city_country,
         z_sign: userData.z_sign,
-        // name: userData.name,
-        // email: userData.email,
-        // password: hashedPassword,
-        // birthDate: userData.birth_date ? new Date(userData.birth_date) : null,
-        // birthTime: userData.birth_time
-        //   ? new Date(`1970-01-01T${userData.birth_time}Z`)
-        //   : null,
-        // gender: userData.gender,
-        // cityCountry: userData.city_country,
-        // zSign: userData.z_sign,
       },
     });
 
@@ -54,18 +44,18 @@ export async function createUser(userData: {
 
     return { success: true, userId: newUserId };
   } catch (error) {
-    console.error("❌ 회원가입 오류:", error);
-    return { success: false, message: "error occured! something went wrong." };
+    console.error("❌ Signup error:", error);
+    return { success: false, message: "Error occurred! Something went wrong." };
   }
 }
 
-// // 이메일로 유저 찾기 (로그인 시 사용 가능)
+// // Find user by email (Can be used for login)
 // export async function getUserByEmail(email: string) {
 //   try {
 //     const user = await db("users").where({ email }).first();
 //     return user || null;
 //   } catch (error) {
-//     console.error("❌ 유저 검색 오류:", error);
+//     console.error("❌ User search error:", error);
 //     return null;
 //   }
 // }

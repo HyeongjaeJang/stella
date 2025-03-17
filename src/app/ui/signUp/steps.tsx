@@ -84,7 +84,7 @@ export default function Steps({ action }: { action: () => void }) {
             />
           )}
         </AnimatePresence>
-        {/* ✖ 버튼 클릭 시 모달 닫기 */}
+        {/* Close modal when ✖ button is clicked */}
         <button
           onClick={action}
           className="absolute top-3 right-3 text-gray-500 text-xl"
