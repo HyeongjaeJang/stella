@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { authenticate } from "@/app/lib/actions";
 
 export default function SignIn({
   action,
@@ -9,23 +10,40 @@ export default function SignIn({
 }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>("");
+  const [loginError, setLoginError] = useState<string | null>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    setError(null);
+    setLoginError(null);
+  };
 
-    if (name === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      setError(emailRegex.test(value) ? "" : "Invalid email format");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setError(emailRegex.test(form.email) ? null : "Invalid email format");
+
+    const formData = new FormData();
+    formData.append("email", form.email);
+    formData.append("password", form.password);
+    const res = await authenticate(formData);
+    if (res === "Invalid credentials." || res === "Something went wrong.") {
+      setLoginError(res);
+    } else {
+      setLoginError(null);
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50 p-5">
+    <form
+      onSubmit={handleSubmit}
+      className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50 p-5"
+    >
       <div className="relative w-full max-w-md p-6 bg-white shadow-lg rounded-lg text-center">
         <h2 className="text-2xl font-bold mb-4">Sign In</h2>
-
         <div className="text-left">
           <label className="block font-semibold">Email</label>
           <input
@@ -58,21 +76,20 @@ export default function SignIn({
           </div>
 
           <button
-            className="mt-4 bg-button w-full p-2 rounded-md text-white font-bold"
-            onClick={() => console.log(form)}
+            className={`mt-4 ${loginError ? "bg-red-300" : "bg-button"} w-full p-2 rounded-md text-white font-bold`}
+            type="submit"
           >
-            Sign In
+            {loginError ? loginError : "Sign In"}
           </button>
         </div>
-
-        {/* Added "Don't have an account? Sign up!" link */}        <p className="mt-4 text-sm">{"Don't have an account?"}</p>
+        {/* Added "Don't have an account? Sign up!" link */}{" "}
+        <p className="mt-4 text-sm">{"Don't have an account?"}</p>
         <button
           className="text-blue-500 font-semibold underline"
           onClick={switchToSignUp}
         >
           Sign up!
         </button>
-
         <button
           onClick={action}
           className="absolute top-3 right-3 text-gray-500 text-xl"
@@ -80,6 +97,6 @@ export default function SignIn({
           ✖
         </button>
       </div>
-    </div>
+    </form>
   );
 }

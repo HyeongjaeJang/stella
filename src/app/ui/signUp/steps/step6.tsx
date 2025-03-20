@@ -39,7 +39,6 @@ const Step6 = ({
       birth_time: form.time,
       gender: form.gender,
       city_country: form.city,
-      z_sign: "testsign",
     };
 
     const res = await createUser(user);

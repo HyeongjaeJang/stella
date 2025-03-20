@@ -1,9 +1,12 @@
 "use server";
 
 import client from "./db";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
+import { getZodiac } from "./ai";
+import { AuthError } from "next-auth";
+import { signIn } from "@/auth";
 
-export async function createUser(userData: {
+type userData = {
   name: string;
   email: string;
   password: string;
@@ -11,18 +14,22 @@ export async function createUser(userData: {
   birth_time: string;
   gender: string;
   city_country: string;
-  z_sign: string;
-}) {
+};
+
+export async function createUser(userData: userData) {
   try {
     // Check for duplicate email
     const existingUser = await client.user.findFirst({
       where: { email: userData.email },
     });
     if (existingUser) {
+      console.log(existingUser);
       return { success: false, message: "Email already exists." };
     }
 
-    const hashedPassword = await argon2.hash(userData.password);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const zodiacSign = await getZodiac(userData);
+    console.log("Zodiac sign:", zodiacSign);
 
     // Create a new user
     const newUser = await client.user.create({
@@ -36,7 +43,7 @@ export async function createUser(userData: {
           : null,
         gender: userData.gender,
         city_country: userData.city_country,
-        z_sign: userData.z_sign,
+        z_sign: zodiacSign,
       },
     });
 
@@ -49,13 +56,18 @@ export async function createUser(userData: {
   }
 }
 
-// // Find user by email (Can be used for login)
-// export async function getUserByEmail(email: string) {
-//   try {
-//     const user = await db("users").where({ email }).first();
-//     return user || null;
-//   } catch (error) {
-//     console.error("❌ User search error:", error);
-//     return null;
-//   }
-// }
+export async function authenticate(formData: FormData) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
+  }
+}
