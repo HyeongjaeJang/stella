@@ -1,14 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import OpenAi from "openai";
-
-type Information = {
-  name: string;
-  birth_date: string;
-  birth_time: string;
-  gender: string;
-  city_country: string;
-};
+import { Information } from "@/types/types";
 
 const client = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 
