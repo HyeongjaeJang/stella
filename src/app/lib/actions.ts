@@ -5,16 +5,7 @@ import bcrypt from "bcryptjs";
 import { getZodiac } from "./ai";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
-
-type userData = {
-  name: string;
-  email: string;
-  password: string;
-  birth_date: string;
-  birth_time: string;
-  gender: string;
-  city_country: string;
-};
+import { userData } from "@/types/types";
 
 export async function createUser(userData: userData) {
   try {

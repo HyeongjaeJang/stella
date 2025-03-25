@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        xxl: "50%",
+      },
       colors: {
         card: "#788fd6",
         button: "#8ea8ff",
