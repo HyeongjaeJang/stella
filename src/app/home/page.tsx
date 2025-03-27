@@ -19,10 +19,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-white dark:bg-[#2d2d3d]">
       <Header name={user} />
       <div className="p-5">
-        <p className="text-xl text-white font-thin">
+        <p className="text-xl font-thin text-black dark:text-white">
           {`Hi ${user}, how's your day?`}
         </p>
       </div>

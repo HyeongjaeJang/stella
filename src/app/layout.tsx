@@ -1,7 +1,9 @@
+import { ThemeProvider } from "@/app/ui/theme-provider";
 import type { Metadata } from "next";
 import { mulish } from "./ui/fonts";
 
 import "./globals.css";
+import { ModeToggle } from "./ui/themeButton";
 
 export const metadata: Metadata = {
   title: "Stella",
@@ -14,8 +16,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${mulish.className} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${mulish.className} antialiased bg-white dark:bg-[#2d2d3d]`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <ModeToggle />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -68,7 +68,7 @@ const Step6 = ({
         }}
         name="gender"
         value={form.gender}
-        className="border p-2 w-full mt-3"
+        className="border p-2 w-full mt-3 bg-white rounded-md"
       >
         <option value="" disabled>
           Select your gender

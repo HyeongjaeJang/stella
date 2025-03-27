@@ -39,7 +39,7 @@ const Step1 = ({
           name="name"
           value={form.name}
           placeholder="Enter name"
-          className="border p-2 w-full mt-3"
+          className="border p-2 w-full mt-3 bg-white rounded-md"
           onChange={(e) => {
             action(e);
             setError(false);

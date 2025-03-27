@@ -75,7 +75,7 @@ const Step5 = ({
             name="country"
             value={selectedCountry}
             onChange={handleCountryChange}
-            className="border p-2 w-full mt-1 rounded-md"
+            className="border p-2 w-full mt-1 rounded-md bg-white"
           >
             <option value="" disabled>
               Select Country
@@ -94,7 +94,7 @@ const Step5 = ({
                 name="state"
                 value={selectedState}
                 onChange={handleStateChange}
-                className="border p-2 w-full mt-1 rounded-md"
+                className="border p-2 w-full mt-1 rounded-md bg-white"
                 disabled={states.length === 0}
               >
                 <option value="" disabled>
@@ -116,7 +116,7 @@ const Step5 = ({
                 name="city"
                 value={selectedCity}
                 onChange={handleCityChange}
-                className="border p-2 w-full mt-1 rounded-md"
+                className="border p-2 w-full mt-1 rounded-md bg-white"
                 disabled={cities.length === 0}
               >
                 <option value="" disabled>

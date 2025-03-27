@@ -27,7 +27,7 @@ const Step4 = ({
           name="time"
           onChange={action}
           value={form.time}
-          className="border p-2 w-full mt-3"
+          className="border p-2 w-full mt-3 rounded-md bg-white"
         />
         <div className="flex justify-between mt-4">
           <button className="bg-gray-300 p-2 rounded-md" onClick={prevStep}>

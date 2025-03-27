@@ -9,11 +9,11 @@ export default function Home() {
   const [showButtons, setShowButtons] = useState(false);
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center relative">
+      <ParticlesBackground />
       <main className="w-full">
         <Logo complete={() => setShowButtons(true)} />
         <Button showButtons={showButtons} />
-        <ParticlesBackground />
       </main>
     </div>
   );

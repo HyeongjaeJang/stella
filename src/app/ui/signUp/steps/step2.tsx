@@ -47,7 +47,7 @@ const Step2 = ({
           name="email"
           value={form.email}
           placeholder="Email"
-          className="border p-2 w-full mt-3"
+          className="border p-2 w-full mt-3 rounded-md bg-white"
           onChange={(e) => {
             action(e);
             setError(false);
@@ -58,13 +58,13 @@ const Step2 = ({
             {errorMessage.includes("Invalid") ? errorMessage : null}
           </p>
         )}
-        <p>Password</p>
+        <p className="mt-2">Password</p>
         <input
           type="password"
           name="password"
           value={form.password}
           placeholder="Password"
-          className="border p-2 w-full mt-3"
+          className="border p-2 w-full mt-3 rounded-md bg-white"
           onChange={(e) => {
             action(e);
             setError(false);

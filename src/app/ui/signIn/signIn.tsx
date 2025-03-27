@@ -42,7 +42,7 @@ export default function SignIn({
       onSubmit={handleSubmit}
       className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50 p-5"
     >
-      <div className="relative w-full max-w-md p-6 bg-white shadow-lg rounded-lg text-center">
+      <div className="relative w-full max-w-md p-6 bg-white shadow-lg rounded-lg text-center dark:text-black">
         <h2 className="text-2xl font-bold mb-4">Sign In</h2>
         <div className="text-left">
           <label className="block font-semibold">Email</label>
@@ -51,7 +51,7 @@ export default function SignIn({
             name="email"
             value={form.email}
             onChange={handleChange}
-            className="border p-2 w-full mt-1 rounded-md"
+            className="border p-2 w-full mt-1 rounded-md bg-white"
             placeholder="Enter your email"
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -63,7 +63,7 @@ export default function SignIn({
               name="password"
               value={form.password}
               onChange={handleChange}
-              className="border p-2 w-full mt-1 rounded-md pr-10"
+              className="border p-2 w-full mt-1 rounded-md pr-10 bg-white"
               placeholder="Enter your password"
             />
             <button
