@@ -7,7 +7,7 @@ const Header = ({ name }: { name: string }) => {
     <div className="flex justify-between w-full p-2">
       <Image src="/Stella.png" alt="logo" width={80} height={80} />
       <div className="w-1/6">
-        <p className="text-center bg-white border-2 p-1 py-3 rounded-xxl mt-4 mr-2 font-bold text-sm leading-6 text-black">
+        <p className="text-center bg-gray-100 border-2 p-1 py-3 rounded-xxl mt-4 mr-2 font-bold text-sm leading-6 text-black">
           {initial}
         </p>
       </div>

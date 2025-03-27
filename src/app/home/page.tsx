@@ -19,7 +19,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-white dark:bg-[#2d2d3d]">
+    <div className="flex flex-col min-h-screen">
       <Header name={user} />
       <div className="p-5">
         <p className="text-xl font-thin text-black dark:text-white">
