@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Card1 from "@/app/ui/home/card/card1";
 
-const cards = ["Card 1", "Card 2", "Card 3", "Card 4", "Card 5"];
+type PropsUser = {
+  id: string;
+  name: string;
+  email: string;
+  z_sign: string | null;
+};
 
-const Cards = () => {
+const Cards = ({ user }: { user: PropsUser }) => {
   const [centerIndex, setCenterIndex] = useState(0);
+
+  const cards = [<Card1 key={1} z_sign={user.z_sign} email={user.email} />];
 
   const getRelativeIndex = (i: number, center: number, length: number) => {
     let diff = i - center;
@@ -40,7 +48,7 @@ const Cards = () => {
 
         return (
           <motion.div
-            key={card}
+            key={index}
             layout
             drag={rel === 0 ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
@@ -63,7 +71,7 @@ const Cards = () => {
             animate={{ x, scale, opacity }}
             whileTap={{ scale: 0.98 }}
           >
-            <h2 className="text-xl font-bold">{card}</h2>
+            {card}
           </motion.div>
         );
       })}

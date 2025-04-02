@@ -34,7 +34,6 @@ export const { auth, signIn, signOut } = NextAuth({
 
         const { email, password } = parsedCredentials.data;
         const user = await getUser(email);
-
         if (!user) {
           console.log("❌ User not found");
           return null;
@@ -60,6 +59,7 @@ export const { auth, signIn, signOut } = NextAuth({
           id: user.id.toString(),
           name: user.name,
           email: user.email,
+          z_sign: user.z_sign,
         };
       },
     }),
