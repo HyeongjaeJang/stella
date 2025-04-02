@@ -4,7 +4,7 @@ import client from "./db";
 import bcrypt from "bcryptjs";
 import { getZodiac } from "./ai";
 import { AuthError } from "next-auth";
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
 
 export async function createUser(userData: userData) {
@@ -68,5 +68,13 @@ export async function getUser() {
     return await auth();
   } catch (error) {
     console.error("❌ Auth error:", error);
+  }
+}
+
+export async function LogOut() {
+  try {
+    await signOut();
+  } catch (error) {
+    console.error("❌ Sign out error:", error);
   }
 }
