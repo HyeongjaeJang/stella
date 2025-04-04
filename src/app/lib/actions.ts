@@ -2,10 +2,11 @@
 
 import client from "./db";
 import bcrypt from "bcryptjs";
-import { getZodiac } from "./ai";
+import { getZodiac, getZodiacData } from "./ai";
 import { AuthError } from "next-auth";
 import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
+import { startOfToday } from "date-fns";
 
 export async function createUser(userData: userData) {
   try {
@@ -47,6 +48,138 @@ export async function createUser(userData: userData) {
   }
 }
 
+export async function getZodiacInfo(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+
+    const exToday = await client.today.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+
+    const exFinance = await client.todays_finance.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+
+    const exHealth = await client.todays_health.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+
+    const exWork = await client.todays_work.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+
+    const exRelationship = await client.todays_relationship.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+
+    const exMood = await client.todays_mood.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    if (
+      !exToday &&
+      !exFinance &&
+      !exHealth &&
+      !exWork &&
+      !exRelationship &&
+      !exMood
+    ) {
+      const data = {
+        name: user.name,
+        birth_date: user?.birth_date?.toISOString(),
+        birth_time: user?.birth_time?.toISOString(),
+        gender: user.gender,
+        city: user.city_country,
+        z_sign: user.z_sign,
+      };
+
+      const res = await getZodiacData(data);
+      if (!res) return;
+
+      const userId = user.id;
+
+      await client.today.create({
+        data: {
+          user_id: userId,
+          ...res.today,
+        },
+      });
+
+      await client.todays_finance.create({
+        data: {
+          user_id: userId,
+          ...res.finance,
+        },
+      });
+
+      await client.todays_health.create({
+        data: {
+          user_id: userId,
+          ...res.health,
+        },
+      });
+
+      await client.todays_work.create({
+        data: {
+          user_id: userId,
+          ...res.work,
+        },
+      });
+
+      await client.todays_relationship.create({
+        data: {
+          user_id: userId,
+          ...res.relationship,
+        },
+      });
+
+      await client.todays_mood.create({
+        data: {
+          user_id: userId,
+          ...res.mood,
+        },
+      });
+      console.log("✅ All zodiac-related data inserted successfully.");
+    }
+    console.log("zodiac datas exist in db");
+  } catch (error) {
+    console.error("❌ Get zodiac info error:", error);
+  }
+}
+
 export async function authenticate(formData: FormData) {
   try {
     await signIn("credentials", formData);
@@ -73,8 +206,52 @@ export async function getUser() {
 
 export async function LogOut() {
   try {
-    await signOut();
+    await signOut({ redirect: false });
   } catch (error) {
     console.error("❌ Sign out error:", error);
+  }
+}
+
+export async function getToday(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+
+    const exToday = await client.today.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today error:", error);
+  }
+}
+
+export async function getTodayWork(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+
+    const exToday = await client.todays_work.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today work error:", error);
   }
 }

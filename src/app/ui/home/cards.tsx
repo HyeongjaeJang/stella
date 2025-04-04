@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Card1 from "@/app/ui/home/card/card1";
+import { getZodiacInfo } from "@/app/lib/actions";
+import { useEffect } from "react";
+import Card2 from "@/app/ui/home/card/card2";
 
 type PropsUser = {
   id: string;
@@ -12,7 +15,10 @@ type PropsUser = {
 const Cards = ({ user }: { user: PropsUser }) => {
   const [centerIndex, setCenterIndex] = useState(0);
 
-  const cards = [<Card1 key={1} z_sign={user.z_sign} email={user.email} />];
+  const cards = [
+    <Card1 key={1} z_sign={user.z_sign} email={user.email} />,
+    <Card2 key={2} email={user.email} />,
+  ];
 
   const getRelativeIndex = (i: number, center: number, length: number) => {
     let diff = i - center;
@@ -22,6 +28,10 @@ const Cards = ({ user }: { user: PropsUser }) => {
 
     return diff;
   };
+
+  useEffect(() => {
+    getZodiacInfo(user.email);
+  }, []);
 
   return (
     <div className="relative w-full flex justify-center items-center mt-8 h-96">

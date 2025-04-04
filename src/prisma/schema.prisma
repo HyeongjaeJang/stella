@@ -8,44 +8,44 @@ datasource db {
 }
 
 model User {
-  id                  Int                   @id @default(autoincrement()) @map("id") @db.UnsignedInt
-  name                String                @db.VarChar(100)
-  email               String                @unique(map: "users_email_unique") @db.VarChar(255)
-  password            String                @db.VarChar(255)
-  birth_date          DateTime?             @db.Date
-  birth_time          DateTime?             @db.Time(0)
-  gender              String?               @db.VarChar(50)
-  city_country        String?               @db.VarChar(255)
-  z_sign              String?               @db.VarChar(50)
-  createdAt           DateTime?             @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt           DateTime?             @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
-  today               today[]
-  todays_finance      todays_finance[]
-  todays_health       todays_health[]
-  todays_mood         todays_mood[]
-  todays_relationship todays_relationship[]
-  todays_work         todays_work[]
+  id                  Int                  @id @default(autoincrement()) @map("id") @db.UnsignedInt
+  name                String               @db.VarChar(100)
+  email               String               @unique(map: "users_email_unique") @db.VarChar(255)
+  password            String               @db.VarChar(255)
+  birth_date          DateTime?            @db.Date
+  birth_time          DateTime?            @db.Time(0)
+  gender              String?              @db.VarChar(50)
+  city_country        String?              @db.VarChar(255)
+  z_sign              String?              @db.VarChar(50)
+  createdAt           DateTime?            @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt           DateTime?            @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  today               today?
+  todays_finance      todays_finance?
+  todays_health       todays_health?
+  todays_mood         todays_mood?
+  todays_relationship todays_relationship?
+  todays_work         todays_work?
 
   @@map("users")
 }
 
 model today {
   id          Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id     Int?      @db.UnsignedInt
+  user_id     Int       @unique @db.UnsignedInt
   created_at  DateTime? @default(now()) @db.Timestamp(0)
   updated_at  DateTime? @default(now()) @db.Timestamp(0)
   number      Int?
   color       String?   @db.VarChar(50)
   item        String?   @db.VarChar(255)
   total_score Int?
-  users       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "today_user_id_foreign")
+  users       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "today_user_id_foreign")
 
   @@index([user_id], map: "today_user_id_foreign")
 }
 
 model todays_finance {
   id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id    Int?      @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
   created_at DateTime? @default(now()) @db.Timestamp(0)
   updated_at DateTime? @default(now()) @db.Timestamp(0)
   income     Int?
@@ -59,7 +59,7 @@ model todays_finance {
 
 model todays_health {
   id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id    Int?      @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
   created_at DateTime? @default(now()) @db.Timestamp(0)
   updated_at DateTime? @default(now()) @db.Timestamp(0)
   state      String?   @db.VarChar(100)
@@ -73,7 +73,7 @@ model todays_health {
 
 model todays_mood {
   id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id    Int?      @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
   created_at DateTime? @default(now()) @db.Timestamp(0)
   updated_at DateTime? @default(now()) @db.Timestamp(0)
   mood       String?   @db.VarChar(100)
@@ -87,7 +87,7 @@ model todays_mood {
 
 model todays_relationship {
   id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id    Int?      @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
   created_at DateTime? @default(now()) @db.Timestamp(0)
   updated_at DateTime? @default(now()) @db.Timestamp(0)
   love       String?   @db.VarChar(100)
@@ -102,7 +102,7 @@ model todays_relationship {
 
 model todays_work {
   id           Int       @id @default(autoincrement()) @db.UnsignedInt
-  user_id      Int?      @db.UnsignedInt
+  user_id      Int       @unique @db.UnsignedInt
   created_at   DateTime? @default(now()) @db.Timestamp(0)
   updated_at   DateTime? @default(now()) @db.Timestamp(0)
   productivity String?   @db.VarChar(100)

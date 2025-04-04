@@ -32,7 +32,7 @@ const Home = () => {
           <Header name={user?.name} />
           <div className="p-5">
             <p className="text-xl font-thin text-black dark:text-white">
-              {`Hi ${user}, how's your day?`}
+              {`Hi ${user.name}, how's your day?`}
             </p>
           </div>
           <Buttons />

@@ -15,3 +15,32 @@ export type userData = {
   gender: string;
   city_country: string;
 };
+
+export type Zinfo = {
+  name: string;
+  birth_date: string | undefined;
+  birth_time: string | undefined;
+  gender: string | null;
+  city: string | null;
+  z_sign: string | null;
+};
+
+export type ZodiacGeneratedData = {
+  today: { number: number; color: string; item: string; total_score: number };
+  finance: { income: number; expense: number; invest: number; text: string };
+  health: { state: string; activity: string; warning: string; text: string };
+  work: {
+    productivity: string;
+    creativity: string;
+    challenge: string;
+    text: string;
+  };
+  relationship: {
+    love: string;
+    work: string;
+    friend: string;
+    family: string;
+    text: string;
+  };
+  mood: { mood: string; energy: string; stress: string; text: string };
+};
