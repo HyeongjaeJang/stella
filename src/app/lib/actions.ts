@@ -6,7 +6,7 @@ import { getZodiac, getZodiacData } from "./ai";
 import { AuthError } from "next-auth";
 import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
-import { startOfToday } from "date-fns";
+import { startOfToday, isBefore } from "date-fns";
 
 export async function createUser(userData: userData) {
   try {
@@ -56,67 +56,34 @@ export async function getZodiacInfo(email: string) {
     });
     if (!user) return null;
 
-    const exToday = await client.today.findFirst({
+    const userId = user.id;
+
+    const existing = await client.today.findFirst({
+      where: { user_id: userId },
+    });
+
+    if (existing && isBefore(existing.created_at!, startOfToday())) {
+      await Promise.all([
+        client.today.deleteMany({ where: { user_id: userId } }),
+        client.todays_finance.deleteMany({ where: { user_id: userId } }),
+        client.todays_health.deleteMany({ where: { user_id: userId } }),
+        client.todays_work.deleteMany({ where: { user_id: userId } }),
+        client.todays_relationship.deleteMany({ where: { user_id: userId } }),
+        client.todays_mood.deleteMany({ where: { user_id: userId } }),
+      ]);
+      console.log("🗑️ Old today data removed");
+    }
+
+    const existingToday = await client.today.findFirst({
       where: {
-        user_id: user.id,
+        user_id: userId,
         created_at: {
           gte: startOfToday(),
         },
       },
     });
 
-    const exFinance = await client.todays_finance.findFirst({
-      where: {
-        user_id: user.id,
-        created_at: {
-          gte: startOfToday(),
-        },
-      },
-    });
-
-    const exHealth = await client.todays_health.findFirst({
-      where: {
-        user_id: user.id,
-        created_at: {
-          gte: startOfToday(),
-        },
-      },
-    });
-
-    const exWork = await client.todays_work.findFirst({
-      where: {
-        user_id: user.id,
-        created_at: {
-          gte: startOfToday(),
-        },
-      },
-    });
-
-    const exRelationship = await client.todays_relationship.findFirst({
-      where: {
-        user_id: user.id,
-        created_at: {
-          gte: startOfToday(),
-        },
-      },
-    });
-
-    const exMood = await client.todays_mood.findFirst({
-      where: {
-        user_id: user.id,
-        created_at: {
-          gte: startOfToday(),
-        },
-      },
-    });
-    if (
-      !exToday &&
-      !exFinance &&
-      !exHealth &&
-      !exWork &&
-      !exRelationship &&
-      !exMood
-    ) {
+    if (!existingToday) {
       const data = {
         name: user.name,
         birth_date: user?.birth_date?.toISOString(),
@@ -129,52 +96,25 @@ export async function getZodiacInfo(email: string) {
       const res = await getZodiacData(data);
       if (!res) return;
 
-      const userId = user.id;
+      await client.$transaction([
+        client.today.create({ data: { user_id: userId, ...res.today } }),
+        client.todays_finance.create({
+          data: { user_id: userId, ...res.finance },
+        }),
+        client.todays_health.create({
+          data: { user_id: userId, ...res.health },
+        }),
+        client.todays_work.create({ data: { user_id: userId, ...res.work } }),
+        client.todays_relationship.create({
+          data: { user_id: userId, ...res.relationship },
+        }),
+        client.todays_mood.create({ data: { user_id: userId, ...res.mood } }),
+      ]);
 
-      await client.today.create({
-        data: {
-          user_id: userId,
-          ...res.today,
-        },
-      });
-
-      await client.todays_finance.create({
-        data: {
-          user_id: userId,
-          ...res.finance,
-        },
-      });
-
-      await client.todays_health.create({
-        data: {
-          user_id: userId,
-          ...res.health,
-        },
-      });
-
-      await client.todays_work.create({
-        data: {
-          user_id: userId,
-          ...res.work,
-        },
-      });
-
-      await client.todays_relationship.create({
-        data: {
-          user_id: userId,
-          ...res.relationship,
-        },
-      });
-
-      await client.todays_mood.create({
-        data: {
-          user_id: userId,
-          ...res.mood,
-        },
-      });
       console.log("✅ All zodiac-related data inserted successfully.");
+    } else {
+      console.log("🟡 Today's data already exists");
     }
-    console.log("zodiac datas exist in db");
   } catch (error) {
     console.error("❌ Get zodiac info error:", error);
   }
