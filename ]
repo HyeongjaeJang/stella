@@ -84,7 +84,7 @@ const Cards = ({ user }: { user: PropsUser }) => {
             }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={() => setCenterIndex(index)}
-            className="absolute w-72 h-[520px] bg-cover bg-center bg-no-repeat text-white text-center flex items-center justify-center cursor-pointer"
+            className="absolute w-72 h-[500px] bg-cover bg-center bg-no-repeat text-white text-center flex items-center justify-center cursor-pointer"
             style={{ zIndex, opacity, backgroundImage: "url('/Card.png')" }}
             animate={{ x, scale, opacity }}
             whileTap={{ scale: 0.98 }}

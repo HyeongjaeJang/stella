@@ -34,12 +34,13 @@ const Card1 = ({ z_sign, email }: Info) => {
   return (
     <div>
       {today && (
-        <>
+        <div className="flex flex-col justify-center items-center">
           <Image
             src={`/${z_sign?.toLowerCase()}.png`}
             alt="coll"
             width={200}
             height={200}
+            className="mt-5"
           />
           <div className="flex flex-col gap-3 mt-3">
             <div className="flex justify-center items-center gap-2">
@@ -52,7 +53,7 @@ const Card1 = ({ z_sign, email }: Info) => {
               <div>Color:</div>
               <div className="font-bold">{today.color}</div>
             </div>
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex justify-center items-center gap-2">
               <div className="flex gap-2">
                 <div>Number:</div>
                 <div className="font-bold">{today.number}</div>
@@ -63,7 +64,7 @@ const Card1 = ({ z_sign, email }: Info) => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

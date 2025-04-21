@@ -233,9 +233,50 @@ export async function getTodayFinance(email: string) {
         },
       },
     });
-    console.log(exToday);
     return exToday;
   } catch (error) {
     console.error("❌ Get today finance error:", error);
+  }
+}
+
+export async function getTodayHealth(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+    const exToday = await client.todays_health.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today health error:", error);
+  }
+}
+
+export async function getTodayMood(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+    const exToday = await client.todays_mood.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today mood error:", error);
   }
 }
