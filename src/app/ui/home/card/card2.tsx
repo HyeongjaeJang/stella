@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getTodayWork } from "@/app/lib/actions";
 
 type Info = {
@@ -17,7 +17,7 @@ type Work = {
 };
 
 const Card2 = ({ email }: Info) => {
-  const [work, setWork] = React.useState<Work | null>(null);
+  const [work, setWork] = useState<Work | null>(null);
   useEffect(() => {
     const fetchTodayWork = async () => {
       const work = await getTodayWork(email);

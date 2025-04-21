@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Card1 from "@/app/ui/home/card/card1";
 import { getZodiacInfo } from "@/app/lib/actions";
 import { useEffect } from "react";
+import Card1 from "@/app/ui/home/card/card1";
 import Card2 from "@/app/ui/home/card/card2";
+import Card3 from "@/app/ui/home/card/card3";
 
 type PropsUser = {
   id: string;
@@ -18,6 +19,7 @@ const Cards = ({ user }: { user: PropsUser }) => {
   const cards = [
     <Card1 key={1} z_sign={user.z_sign} email={user.email} />,
     <Card2 key={2} email={user.email} />,
+    <Card3 key={3} email={user.email} />,
   ];
 
   const getRelativeIndex = (i: number, center: number, length: number) => {

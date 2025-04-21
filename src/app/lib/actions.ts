@@ -195,3 +195,26 @@ export async function getTodayWork(email: string) {
     console.error("❌ Get today work error:", error);
   }
 }
+
+export async function getTodayPeople(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+
+    const exToday = await client.todays_relationship.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    console.log(exToday);
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today people error:", error);
+  }
+}
