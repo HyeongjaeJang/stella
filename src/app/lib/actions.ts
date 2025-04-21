@@ -212,9 +212,30 @@ export async function getTodayPeople(email: string) {
         },
       },
     });
-    console.log(exToday);
     return exToday;
   } catch (error) {
     console.error("❌ Get today people error:", error);
+  }
+}
+
+export async function getTodayFinance(email: string) {
+  try {
+    const user = await client.user.findFirst({
+      where: { email },
+      omit: { password: true },
+    });
+    if (!user) return null;
+    const exToday = await client.todays_finance.findFirst({
+      where: {
+        user_id: user.id,
+        created_at: {
+          gte: startOfToday(),
+        },
+      },
+    });
+    console.log(exToday);
+    return exToday;
+  } catch (error) {
+    console.error("❌ Get today finance error:", error);
   }
 }
