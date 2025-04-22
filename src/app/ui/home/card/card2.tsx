@@ -47,7 +47,7 @@ const Card2 = ({ email }: Info) => {
               <p>Challenge:</p>
               <p className="font-semibold">{work?.challenge}</p>
             </div>
-            <div className="flex text-sm gap-2">
+            <div className="flex text-sm gap-2 p-1">
               <p>{work?.text}</p>
             </div>
           </div>

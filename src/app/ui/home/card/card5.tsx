@@ -48,7 +48,7 @@ const Card5 = ({ email }: Info) => {
               <p>Warning:</p>
               <p className="font-semibold">{health?.warning}</p>
             </div>
-            <div className="flex text-sm gap-2">
+            <div className="flex text-sm gap-2 p-2">
               <p>{health?.text}</p>
             </div>
           </div>

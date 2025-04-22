@@ -38,8 +38,8 @@ const Card1 = ({ z_sign, email }: Info) => {
           <Image
             src={`/${z_sign?.toLowerCase()}.png`}
             alt="coll"
-            width={200}
-            height={200}
+            width={180}
+            height={180}
             className="mt-5"
           />
           <div className="flex flex-col gap-3 mt-3">

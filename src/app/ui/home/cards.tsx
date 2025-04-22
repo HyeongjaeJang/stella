@@ -8,6 +8,7 @@ import Card3 from "@/app/ui/home/card/card3";
 import Card4 from "@/app/ui/home/card/card4";
 import Card5 from "@/app/ui/home/card/card5";
 import Card6 from "@/app/ui/home/card/card6";
+import border from "../../../../public/border.svg";
 
 type PropsUser = {
   id: string;
@@ -84,8 +85,13 @@ const Cards = ({ user }: { user: PropsUser }) => {
             }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={() => setCenterIndex(index)}
-            className="absolute w-72 h-[520px] bg-cover bg-center bg-no-repeat text-white text-center flex items-center justify-center cursor-pointer"
-            style={{ zIndex, opacity, backgroundImage: "url('/Card.png')" }}
+            className="absolute w-64 h-96 bg-center bg-no-repeat bg-button rounded-xl text-white text-center flex items-center justify-center shadow-xl cursor-pointer"
+            style={{
+              zIndex,
+              opacity,
+              backgroundImage: `url(${border.src})`,
+              backgroundSize: "95% 95%",
+            }}
             animate={{ x, scale, opacity }}
             whileTap={{ scale: 0.98 }}
           >

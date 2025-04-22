@@ -52,7 +52,7 @@ const Card3 = ({ email }: Info) => {
               <p>Work:</p>
               <p className="font-semibold">{people?.work}</p>
             </div>
-            <div className="flex text-sm gap-2">
+            <div className="flex text-sm gap-2 p-1">
               <p>{people?.text}</p>
             </div>
           </div>
