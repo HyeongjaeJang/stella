@@ -35,7 +35,7 @@ const Home = () => {
               {`Hi ${user.name}, how's your day?`}
             </p>
           </div>
-          <Buttons />
+          <Buttons user={user} />
           <Cards user={user} />
         </div>
       )}

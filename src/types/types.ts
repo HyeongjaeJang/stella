@@ -44,3 +44,22 @@ export type ZodiacGeneratedData = {
   };
   mood: { mood: string; energy: string; stress: string; text: string };
 };
+
+export type ZodiaWeeklyWorkType = {
+  summary: string;
+  total_score: number;
+  productivity: number;
+  creativity: number;
+  challenge: number;
+  energy: number;
+  days_analysis: {
+    Mon: string;
+    Tue: string;
+    Wed: string;
+    Thu: string;
+    Fri: string;
+    Sat: string;
+    Sun: string;
+  };
+  advice: string;
+};

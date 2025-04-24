@@ -20,7 +20,7 @@ export function ModeToggle() {
   }, []);
 
   return (
-    <div className="absolute left-80 bottom-10">
+    <div className="absolute right-8 bottom-10">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">

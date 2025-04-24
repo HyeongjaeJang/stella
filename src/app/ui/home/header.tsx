@@ -24,7 +24,13 @@ const Header = ({ name }: { name: string }) => {
 
   return (
     <div className="flex justify-between w-full p-2">
-      <Image src="/Stella.png" alt="logo" width={80} height={80} />
+      <Image
+        src="/Stella.png"
+        alt="logo"
+        width={80}
+        height={80}
+        onClick={() => router.push("/home")}
+      />
       <div className="w-1/6">
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">

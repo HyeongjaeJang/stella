@@ -3,7 +3,12 @@
 import dotenv from "dotenv";
 dotenv.config();
 import OpenAi from "openai";
-import { Information, Zinfo, ZodiacGeneratedData } from "@/types/types";
+import {
+  Information,
+  Zinfo,
+  ZodiacGeneratedData,
+  ZodiaWeeklyWorkType,
+} from "@/types/types";
 
 const client = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -115,5 +120,70 @@ Only return the JSON, no explanation.
   } catch (error) {
     console.error("❌ Error fetching zodiac-based data:", error);
     return null;
+  }
+};
+
+export const getWeeklyWork = async (
+  data: Zinfo,
+): Promise<ZodiaWeeklyWorkType | undefined> => {
+  const { name, birth_date, birth_time, gender, city, z_sign } = data;
+
+  const prompt = `
+You are an astrological life coach.
+
+Based on the user's zodiac and birth data, generate a weekly WORK report with:
+
+🔹 Total Score (0~100)
+🔹 Metrics (scale of 0–10):
+- Productivity
+- Creativity
+- Challenge
+- Energy
+
+🔹 Summary: Short 1-sentence overview of the week.
+🔹 Daily analysis (Mon–Sun): 1 sentence describing the user's work mindset or performance for each day.
+🔹 Advice: 1 sentence advice for the week.
+
+Input:
+- Name: ${name}
+- Birth date: ${birth_date}
+- Birth time: ${birth_time}
+- Gender: ${gender}
+- City/Country: ${city}
+- Zodiac Sign: ${z_sign}
+
+Return **only JSON**:
+
+{
+  "summary": "Focused and efficient, a week for clear goals.",
+  "total_score": 86,
+  "productivity": 9,
+  "creativity": 6,
+  "challenge": 3,
+  "energy": 8,
+  "days_analysis": {
+    "Mon": "Sharp focus on high-priority tasks.",
+    "Tue": "A small creative breakthrough.",
+    "Wed": "Teamwork will thrive.",
+    "Thu": "Some delays, but manageable.",
+    "Fri": "Wrap up with satisfaction.",
+    "Sat": "Try not to overthink future tasks.",
+    "Sun": "Mental reset is important today."
+  },
+  "advice": "Start strong and ride the momentum through midweek."
+}
+`;
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching weekly work data:", error);
   }
 };

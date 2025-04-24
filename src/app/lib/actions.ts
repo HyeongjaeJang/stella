@@ -2,11 +2,11 @@
 
 import client from "./db";
 import bcrypt from "bcryptjs";
-import { getZodiac, getZodiacData } from "./ai";
+import { getWeeklyWork, getZodiac, getZodiacData } from "./ai";
 import { AuthError } from "next-auth";
 import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
-import { startOfToday, isBefore } from "date-fns";
+import { startOfToday, isBefore, endOfWeek, startOfWeek } from "date-fns";
 
 export async function createUser(userData: userData) {
   try {
@@ -278,5 +278,77 @@ export async function getTodayMood(email: string) {
     return exToday;
   } catch (error) {
     console.error("❌ Get today mood error:", error);
+  }
+}
+
+export async function getWeeklyWorkData(id: string) {
+  try {
+    const parseId = parseInt(id);
+    const user = await client.user.findFirst({
+      where: { id: parseId },
+      omit: { password: true },
+    });
+    if (!user) return null;
+
+    const userId = user.id;
+    const now = new Date();
+    const weekStart = startOfWeek(now, { weekStartsOn: 1 });
+    const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+
+    const weeklyData = await client.weekly_work.findFirst({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    if (weeklyData && isBefore(weeklyData.week_start, weekStart)) {
+      await client.weekly_work.delete({ where: { user_id: user.id } });
+      console.log("🗑️ Deleted old weekly_work data");
+    }
+
+    const latest = await client.weekly_work.findFirst({
+      where: {
+        user_id: userId,
+        week_start: { gte: weekStart },
+      },
+    });
+
+    if (!latest) {
+      const data = {
+        name: user.name,
+        birth_date: user.birth_date?.toISOString(),
+        birth_time: user.birth_time?.toISOString(),
+        gender: user.gender,
+        city: user.city_country,
+        z_sign: user.z_sign,
+      };
+
+      const res = await getWeeklyWork(data);
+      if (!res) return;
+
+      const saved = await client.weekly_work.create({
+        data: {
+          user_id: userId,
+          week_start: weekStart,
+          week_end: weekEnd,
+          total_score: res.total_score,
+          summary: res.summary,
+          productivity: res.productivity,
+          creativity: res.creativity,
+          challenge: res.challenge,
+          energy: res.energy,
+          days_analysis: res.days_analysis,
+          advice: res.advice,
+        },
+      });
+
+      console.log("✅ Weekly work data created");
+      return saved;
+    }
+
+    console.log("🟡 Weekly work data already exists");
+    return latest;
+  } catch (error) {
+    console.error("❌ Get weekly work data error:", error);
   }
 }
