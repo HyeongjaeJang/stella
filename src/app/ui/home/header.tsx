@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Header = ({ name }: { name: string }) => {
   const initial = name.charAt(0).toUpperCase();
@@ -24,13 +25,15 @@ const Header = ({ name }: { name: string }) => {
 
   return (
     <div className="flex justify-between w-full p-2">
-      <Image
-        src="/Stella.png"
-        alt="logo"
-        width={80}
-        height={80}
-        onClick={() => router.push("/home")}
-      />
+      <Link href="/home">
+        <Image
+          src="/Stella.png"
+          alt="logo"
+          width={80}
+          height={80}
+          className="cursor-pointer"
+        />
+      </Link>
       <div className="w-1/6">
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">
