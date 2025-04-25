@@ -55,7 +55,46 @@ const Page = () => {
     fetchWeeklyWorkData();
   }, [id]);
 
-  return <Suspense fallback>{user && <Header name={user?.name} />}</Suspense>;
+  return (
+    <Suspense fallback>
+      {user && (
+        <div className="flex flex-col min-h-screen">
+          <Header name={user?.name} />
+          <div className="flex flex-col justify-center items-center p-4">
+            <div className="flex flex-col mt-5 bg-button w-full justify-center items-center p-4 rounded-lg shadow-md">
+              <h2 className="text-2xl font-semibold text-white">Weekly Work</h2>
+              <p className="text-xl text-white my-4">
+                Total Score: <strong>{weeklyWork?.total_score}</strong>
+              </p>
+              <hr className="border-gray-200 border-[1px] w-full" />
+              <div className="flex flex-wrap gap-2 p-4">
+                <div className="w-44">
+                  <p>
+                    Creativity: <strong>{weeklyWork?.creativity}</strong>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Productivity: <strong>{weeklyWork?.productivity}</strong>
+                  </p>
+                </div>
+                <div className="w-44">
+                  <p>
+                    Energy: <strong>{weeklyWork?.energy}</strong>
+                  </p>
+                </div>
+                <div>
+                  <p>
+                    Challenge: <strong>{weeklyWork?.challenge}</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </Suspense>
+  );
 };
 
 export default Page;

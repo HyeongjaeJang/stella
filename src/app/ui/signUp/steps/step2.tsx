@@ -12,6 +12,7 @@ const Step2 = ({
   nextStep: () => void;
   prevStep: () => void;
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -59,17 +60,26 @@ const Step2 = ({
           </p>
         )}
         <p className="mt-2">Password</p>
-        <input
-          type="password"
-          name="password"
-          value={form.password}
-          placeholder="Password"
-          className="border p-2 w-full mt-3 rounded-md bg-white"
-          onChange={(e) => {
-            action(e);
-            setError(false);
-          }}
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={form.password}
+            placeholder="Password"
+            className="border p-2 w-full mt-3 rounded-md bg-white"
+            onChange={(e) => {
+              action(e);
+              setError(false);
+            }}
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-5 text-gray-600"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "👁️" : "🙈"}
+          </button>
+        </div>
         {error && (
           <p className="text-red-500">
             {errorMessage.includes("Password") ? errorMessage : null}
