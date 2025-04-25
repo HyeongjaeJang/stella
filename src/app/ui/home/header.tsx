@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import {
   DropdownMenu,
@@ -13,8 +13,10 @@ import {
 import { LogOut } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 const Header = ({ name }: { name: string }) => {
+  const { theme, setTheme } = useTheme();
   const initial = name.charAt(0).toUpperCase();
   const router = useRouter();
 
@@ -22,6 +24,12 @@ const Header = ({ name }: { name: string }) => {
     await LogOut();
     router.push("/");
   };
+
+  useEffect(() => {
+    if (theme) {
+      setTheme(theme);
+    }
+  }, []);
 
   return (
     <div className="flex justify-between w-full p-2">
@@ -47,6 +55,13 @@ const Header = ({ name }: { name: string }) => {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleLogout()}>
               LogOut
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                theme === "dark" ? setTheme("light") : setTheme("dark")
+              }
+            >
+              Theme
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { mulish } from "./ui/fonts";
 
 import "./globals.css";
-import { ModeToggle } from "./ui/themeButton";
 
 export const metadata: Metadata = {
   title: "Stella",
@@ -27,7 +26,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <ModeToggle />
         </ThemeProvider>
       </body>
     </html>
