@@ -1,6 +1,6 @@
 # 🌟 Stella – Daily Astrological Insights
 
-Stella is a full-stack astrology-based daily insight application that uses user birth data to generate personalized predictions using OpenAI. It is powered by Next.js, MySQL, and Prisma ORM.
+Stella is a mobile full-stack astrology-based daily insight application that uses user birth data to generate personalized predictions using OpenAI. It is powered by Next.js, MySQL, and Prisma ORM.
 
 ---
 
@@ -17,8 +17,8 @@ Stella is a full-stack astrology-based daily insight application that uses user 
 Create a `.env` file in the root of your project with the following contents:
 
 ```env
-AUTH_SECRET="0NZDsZlYbzYFIZHt4kzmDp+xg5x4S/v9bcZ5u4DFZIE="
-DATABASE_URL="mysql://root:123123123@localhost:3306/stella"
+AUTH_SECRET="Next.js auth"
+DATABASE_URL="mysql url"
 OPENAI_API_KEY="your_openai_api_key_here"
 
 ---
