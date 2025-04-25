@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <Suspense fallback>
       {user && (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col h-screen">
           <Header name={user?.name} />
           <div className="p-5">
             <p className="text-xl font-thin text-black dark:text-white">

@@ -3,7 +3,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { getWeeklyWorkData, getUser } from "@/app/lib/actions";
 import { useParams } from "next/navigation";
-import { JsonValue } from "@prisma/client/runtime/library";
 import Header from "@/app/ui/home/header";
 
 type SessionUser = {
@@ -17,7 +16,7 @@ type WeeklyWork = {
   advice: string;
   challenge: number;
   creativity: number;
-  days_analysis: JsonValue;
+  days_analysis: Record<string, string>;
   energy: number;
   id: number;
   productivity: number;
@@ -48,7 +47,11 @@ const Page = () => {
       if (id) {
         const week = await getWeeklyWorkData(id);
         if (week) {
-          setWeeklyWork(week);
+          const fixed = {
+            ...week,
+            days_analysis: (week.days_analysis ?? {}) as Record<string, string>,
+          };
+          setWeeklyWork(fixed);
         }
       }
     };
@@ -58,16 +61,16 @@ const Page = () => {
   return (
     <Suspense fallback>
       {user && (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col h-screen">
           <Header name={user?.name} />
-          <div className="flex flex-col justify-center items-center p-4">
+          <div className="flex flex-col p-4">
             <div className="flex flex-col mt-5 bg-button w-full justify-center items-center p-4 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold text-white">Weekly Work</h2>
               <p className="text-xl text-white my-4">
                 Total Score: <strong>{weeklyWork?.total_score}</strong>
               </p>
               <hr className="border-gray-200 border-[1px] w-full" />
-              <div className="flex flex-wrap gap-2 p-4">
+              <div className="flex flex-wrap gap-2 p-4 text-white">
                 <div className="w-44">
                   <p>
                     Creativity: <strong>{weeklyWork?.creativity}</strong>
@@ -89,6 +92,38 @@ const Page = () => {
                   </p>
                 </div>
               </div>
+            </div>
+            <hr className="border-button border-[1px] w-full mt-4" />
+            <div>
+              <p className="text-xl font-bold my-4 text-button">
+                Days Analysis
+              </p>
+              {weeklyWork?.days_analysis && (
+                <div className="mt-4 space-y-2">
+                  {Object.entries(weeklyWork.days_analysis)
+                    .sort(([dayA], [dayB]) => {
+                      const dayOrder = [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun",
+                      ];
+                      return dayOrder.indexOf(dayA) - dayOrder.indexOf(dayB);
+                    })
+                    .map(([day, text]) => (
+                      <div
+                        key={day}
+                        className="p-2 bg-gray-500 rounded-md text-white flex justify-between items-center"
+                      >
+                        <p className="font-bold">{day}</p>
+                        <p className="text-sm">{text}</p>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
