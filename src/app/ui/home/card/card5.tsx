@@ -1,33 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { getTodayHealth } from "@/app/lib/actions";
+import { Health } from "@/types/cardTypes";
 
-type Info = {
-  email: string;
-};
-
-type Health = {
-  id: number;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-  state: string | null;
-  activity: string | null;
-  warning: string | null;
-  text: string | null;
-};
-
-const Card5 = ({ email }: Info) => {
-  const [health, setHealth] = useState<Health | null>(null);
-
-  useEffect(() => {
-    const fetchTodayHealth = async () => {
-      const health = await getTodayHealth(email);
-      if (health) {
-        setHealth(health);
-      }
-    };
-    fetchTodayHealth();
-  }, []);
+const Card5 = ({ health }: { health: Health }) => {
+  if (!health) {
+    return null;
+  }
 
   return (
     <div className="p-4">

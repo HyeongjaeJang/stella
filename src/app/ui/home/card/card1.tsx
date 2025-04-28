@@ -1,35 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import { getToday } from "@/app/lib/actions";
-import { useEffect } from "react";
+import { Today } from "@/types/cardTypes";
 
-type Info = {
-  z_sign: string | null;
-  email: string;
-};
-
-type Today = {
-  color: string | null;
-  id: number;
-  item: string | null;
-  number: number | null;
-  total_score: number | null;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-};
-
-const Card1 = ({ z_sign, email }: Info) => {
-  const [today, setToday] = React.useState<Today | null>(null);
-  useEffect(() => {
-    const fetchToday = async () => {
-      const today = await getToday(email);
-      if (today) {
-        setToday(today);
-      }
-    };
-    fetchToday();
-  }, []);
+const Card1 = ({ z_sign, today }: { z_sign: string | null; today: Today }) => {
+  if (!today) {
+    return null;
+  }
 
   return (
     <div>
@@ -41,6 +17,7 @@ const Card1 = ({ z_sign, email }: Info) => {
             width={180}
             height={180}
             className="mt-5"
+            priority
           />
           <div className="flex flex-col gap-3 mt-3">
             <div className="flex justify-center items-center gap-2">

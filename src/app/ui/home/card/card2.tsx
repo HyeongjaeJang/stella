@@ -1,32 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getTodayWork } from "@/app/lib/actions";
+import { Work } from "@/types/cardTypes";
 
-type Info = {
-  email: string;
-};
-
-type Work = {
-  id: number;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-  text: string | null;
-  productivity: string | null;
-  creativity: string | null;
-  challenge: string | null;
-};
-
-const Card2 = ({ email }: Info) => {
-  const [work, setWork] = useState<Work | null>(null);
-  useEffect(() => {
-    const fetchTodayWork = async () => {
-      const work = await getTodayWork(email);
-      if (work) {
-        setWork(work);
-      }
-    };
-    fetchTodayWork();
-  }, []);
+const Card2 = ({ work }: { work: Work }) => {
+  if (!work) {
+    return null;
+  }
 
   return (
     <div className="p-4">

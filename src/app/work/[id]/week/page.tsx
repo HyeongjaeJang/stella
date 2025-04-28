@@ -93,13 +93,13 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <hr className="border-button border-[1px] w-full mt-4" />
+            <hr className="border-button border-[1px] w-full mt-8" />
             <div>
               <p className="text-xl font-bold my-4 text-button">
                 Days Analysis
               </p>
               {weeklyWork?.days_analysis && (
-                <div className="mt-4 space-y-2">
+                <div className="my-4 space-y-2">
                   {Object.entries(weeklyWork.days_analysis)
                     .sort(([dayA], [dayB]) => {
                       const dayOrder = [

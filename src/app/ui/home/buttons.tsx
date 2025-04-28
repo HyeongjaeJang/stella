@@ -1,13 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-type PropsUser = {
-  id: string;
-  name: string;
-  email: string;
-  z_sign: string | null;
-};
+import { PropsUser } from "@/types/types";
 
 const images = [
   "/work.png",

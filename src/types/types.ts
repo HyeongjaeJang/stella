@@ -63,3 +63,10 @@ export type ZodiaWeeklyWorkType = {
   };
   advice: string;
 };
+
+export type PropsUser = {
+  id: string;
+  name: string;
+  email: string;
+  z_sign: string | null;
+};

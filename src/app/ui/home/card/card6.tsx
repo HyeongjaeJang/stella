@@ -1,32 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { getTodayMood } from "@/app/lib/actions";
+import { Mood } from "@/types/cardTypes";
 
-type Info = {
-  email: string;
-};
-
-type Mood = {
-  id: number;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-  mood: string | null;
-  energy: string | null;
-  stress: string | null;
-  text: string | null;
-};
-
-const Card6 = ({ email }: Info) => {
-  const [mood, setMood] = useState<Mood | null>(null);
-  useEffect(() => {
-    const fetchTodayMood = async () => {
-      const mood = await getTodayMood(email);
-      if (mood) {
-        setMood(mood);
-      }
-    };
-    fetchTodayMood();
-  }, []);
+const Card6 = ({ mood }: { mood: Mood }) => {
+  if (!mood) {
+    return null;
+  }
 
   return (
     <div className="p-4">

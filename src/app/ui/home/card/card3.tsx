@@ -1,33 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { getTodayPeople } from "@/app/lib/actions";
+import { People } from "@/types/cardTypes";
 
-type Info = {
-  email: string;
-};
-
-type People = {
-  id: number;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-  text: string | null;
-  love: string | null;
-  work: string | null;
-  family: string | null;
-  friend: string | null;
-};
-
-const Card3 = ({ email }: Info) => {
-  const [people, setPeople] = useState<People | null>(null);
-  useEffect(() => {
-    const fetchTodayPeople = async () => {
-      const people = await getTodayPeople(email);
-      if (people) {
-        setPeople(people);
-      }
-    };
-    fetchTodayPeople();
-  }, []);
+const Card3 = ({ people }: { people: People }) => {
+  if (!people) {
+    return null;
+  }
 
   return (
     <div className="p-4">

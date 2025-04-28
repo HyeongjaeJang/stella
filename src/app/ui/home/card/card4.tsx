@@ -1,33 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { getTodayFinance } from "@/app/lib/actions";
+import { Finance } from "@/types/cardTypes";
 
-type Info = {
-  email: string;
-};
-
-type Finance = {
-  id: number;
-  user_id: number | null;
-  created_at: Date | null;
-  updated_at: Date | null;
-  income: number | null;
-  expense: number | null;
-  invest: number | null;
-  text: string | null;
-};
-
-const Card4 = ({ email }: Info) => {
-  const [finance, setFinance] = useState<Finance | null>(null);
-
-  useEffect(() => {
-    const fetchTodayFinance = async () => {
-      const finance = await getTodayFinance(email);
-      if (finance) {
-        setFinance(finance);
-      }
-    };
-    fetchTodayFinance();
-  }, []);
+const Card4 = ({ finance }: { finance: Finance }) => {
+  if (!finance) {
+    return null;
+  }
 
   return (
     <div className="p-4">

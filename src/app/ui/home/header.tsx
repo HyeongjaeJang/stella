@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import {
   DropdownMenu,
@@ -25,12 +25,6 @@ const Header = ({ name }: { name: string }) => {
     router.push("/");
   };
 
-  useEffect(() => {
-    if (theme) {
-      setTheme(theme);
-    }
-  }, []);
-
   return (
     <div className="flex justify-between w-full p-2">
       <Link href="/home">
@@ -39,13 +33,15 @@ const Header = ({ name }: { name: string }) => {
           alt="logo"
           width={80}
           height={80}
-          className="cursor-pointer"
+          priority={true}
+          className="cursor-pointer w-auto"
+          style={{ width: 80, height: 80 }}
         />
       </Link>
       <div className="w-1/6">
         <DropdownMenu>
-          <DropdownMenuTrigger className="w-full">
-            <p className="text-center bg-gray-100 border-2 p-1 py-3 rounded-xxl mt-4 mr-2 font-bold text-sm leading-6 text-black">
+          <DropdownMenuTrigger className="w-full flex justify-end">
+            <p className="w-full md:w-[3.5rem] text-center bg-gray-100 border-2 p-1 py-3 rounded-xxl mt-4 mr-2 font-bold text-sm leading-6 text-black">
               {initial}
             </p>
           </DropdownMenuTrigger>

@@ -9,24 +9,41 @@ import Card4 from "@/app/ui/home/card/card4";
 import Card5 from "@/app/ui/home/card/card5";
 import Card6 from "@/app/ui/home/card/card6";
 import border from "../../../../public/border.svg";
+import { Today, Work, People, Finance, Health, Mood } from "@/types/cardTypes";
+import { PropsUser } from "@/types/types";
 
-type PropsUser = {
-  id: string;
-  name: string;
-  email: string;
-  z_sign: string | null;
-};
-
-const Cards = ({ user }: { user: PropsUser }) => {
+const Cards = ({
+  user,
+  today,
+  work,
+  people,
+  finance,
+  health,
+  mood,
+}: {
+  user: PropsUser;
+  today: Today;
+  work: Work;
+  people: People;
+  finance: Finance;
+  health: Health;
+  mood: Mood;
+}) => {
   const [centerIndex, setCenterIndex] = useState(0);
 
+  useEffect(() => {
+    (async () => {
+      await getZodiacInfo(user.email);
+    })();
+  }, [user.email]);
+
   const cards = [
-    <Card1 key={1} z_sign={user.z_sign} email={user.email} />,
-    <Card2 key={2} email={user.email} />,
-    <Card3 key={3} email={user.email} />,
-    <Card4 key={4} email={user.email} />,
-    <Card5 key={5} email={user.email} />,
-    <Card6 key={6} email={user.email} />,
+    <Card1 key={1} z_sign={user.z_sign} today={today} />,
+    <Card2 key={2} work={work} />,
+    <Card3 key={3} people={people} />,
+    <Card4 key={4} finance={finance} />,
+    <Card5 key={5} health={health} />,
+    <Card6 key={6} mood={mood} />,
   ];
 
   const getRelativeIndex = (i: number, center: number, length: number) => {
@@ -37,10 +54,6 @@ const Cards = ({ user }: { user: PropsUser }) => {
 
     return diff;
   };
-
-  useEffect(() => {
-    getZodiacInfo(user.email);
-  }, []);
 
   return (
     <div className="relative w-full flex justify-center items-center mt-8 h-96">
