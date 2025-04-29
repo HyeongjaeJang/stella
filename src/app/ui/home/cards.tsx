@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getZodiacInfo } from "@/app/lib/actions";
-import { useEffect } from "react";
 import Card1 from "@/app/ui/home/card/card1";
 import Card2 from "@/app/ui/home/card/card2";
 import Card3 from "@/app/ui/home/card/card3";
