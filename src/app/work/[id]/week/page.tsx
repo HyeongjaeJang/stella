@@ -25,7 +25,7 @@ const Page = async ({ params }: PageProps) => {
     week_end: weeklyWork?.week_end ?? new Date(),
   };
 
-  return <WeeklyWorkClient user={res?.user} weeklyWork={fixedWeeklyWork!} />;
+  return <WeeklyWorkClient user={res?.user} weeklyWork={fixedWeeklyWork} />;
 };
 
 export default Page;

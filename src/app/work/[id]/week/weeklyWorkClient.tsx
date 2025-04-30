@@ -1,22 +1,22 @@
 "use client";
 
 import Header from "@/app/ui/home/header";
-// import Days from "@/app/ui/week/days";
+import Days from "@/app/ui/week/days";
 import { Suspense } from "react";
 import { PropsUser } from "@/types/types";
 import Fortune from "@/app/ui/week/fourtune";
 
 type WeeklyWork = {
   advice: string;
-  challenge?: number | undefined;
-  creativity?: number | undefined;
+  challenge?: number;
+  creativity?: number;
   days_analysis: Record<string, string>;
-  energy?: number | undefined;
-  id?: number | undefined;
-  productivity?: number | undefined;
+  energy?: number;
+  id?: number;
+  productivity?: number;
   summary: string;
-  total_score?: number | undefined;
-  user_id?: number | undefined;
+  total_score?: number;
+  user_id?: number;
   week_end: Date;
   week_start: Date;
 };
@@ -52,6 +52,7 @@ const WeeklyWorkClient = ({
               <h3 className="text-lg font-thin">Weekly Summary</h3>
               <p className="text-sm font-thin">{weeklyWork?.summary}</p>
             </div>
+            <Days days={weeklyWork?.days_analysis} />
           </div>
         </div>
       )}
