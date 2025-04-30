@@ -140,8 +140,8 @@ Based on the user's zodiac and birth data, generate a weekly WORK report with:
 - Challenge
 - Energy
 
-🔹 Summary: Short 1-sentence overview of the week.
-🔹 Daily analysis (Mon–Sun): 1 sentence describing the user's work mindset or performance for each day.
+🔹 Summary: Write at least 3 full sentences that provide a meaningful and varied overview of the week. Highlight trends or shifts (e.g., early-week challenges, mid-week growth, weekend rest), not just generic descriptions.
+🔹 Daily analysis (Mon–Sun): For each day, write **2 distinct sentences** describing the user's work mindset, productivity, or emotional state. Avoid repeating sentences or phrasing across different days.
 🔹 Advice: 1 sentence advice for the week.
 
 Input:
@@ -152,25 +152,25 @@ Input:
 - City/Country: ${city}
 - Zodiac Sign: ${z_sign}
 
-Return **only JSON**:
+Return **only valid JSON** like this:
 
 {
-  "summary": "Focused and efficient, a week for clear goals.",
+  "summary": "This week begins with some mental fog but clears by Wednesday. You'll find a surprising surge in energy and collaboration mid-week. By the weekend, a more reflective mood sets in, prompting you to refine rather than act.",
   "total_score": 86,
   "productivity": 9,
   "creativity": 6,
   "challenge": 3,
   "energy": 8,
   "days_analysis": {
-    "Mon": "Sharp focus on high-priority tasks.",
-    "Tue": "A small creative breakthrough.",
-    "Wed": "Teamwork will thrive.",
-    "Thu": "Some delays, but manageable.",
-    "Fri": "Wrap up with satisfaction.",
-    "Sat": "Try not to overthink future tasks.",
-    "Sun": "Mental reset is important today."
+    "Mon": "It feels hard to get started as distractions pull your focus. Prioritize clarity in your task list.",
+    "Tue": "Progress picks up but communication may be unclear. Keep written notes to avoid misunderstandings.",
+    "Wed": "A surge of teamwork energy helps you move faster. Delegating tasks will be effective today.",
+    "Thu": "You may feel drained but capable of staying on track. A short walk can reset your focus.",
+    "Fri": "Tasks feel easier to complete and creativity returns. Use the flow to close open loops.",
+    "Sat": "You're reflective but motivated. Use quiet time to brainstorm improvements.",
+    "Sun": "Avoid multitasking and stay mindful. Rest will sharpen your thinking for next week."
   },
-  "advice": "Start strong and ride the momentum through midweek."
+  "advice": "Balance intensity with recovery—pushing too hard all week may backfire by Sunday."
 }
 `;
   try {

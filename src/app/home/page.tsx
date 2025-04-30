@@ -1,4 +1,5 @@
 import {
+  getZodiacInfo,
   getUser,
   getToday,
   getTodayWork,
@@ -16,6 +17,8 @@ export default async function Page() {
     console.error("❌ User not found");
     return;
   }
+
+  await getZodiacInfo(res.user.email);
 
   const today = await getToday(res.user.email);
   const work = await getTodayWork(res.user.email);

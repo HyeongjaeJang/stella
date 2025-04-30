@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { getZodiacInfo } from "@/app/lib/actions";
 import Card1 from "@/app/ui/home/card/card1";
 import Card2 from "@/app/ui/home/card/card2";
 import Card3 from "@/app/ui/home/card/card3";
@@ -29,12 +28,6 @@ const Cards = ({
   mood: Mood;
 }) => {
   const [centerIndex, setCenterIndex] = useState(0);
-
-  useEffect(() => {
-    (async () => {
-      await getZodiacInfo(user.email);
-    })();
-  }, [user.email]);
 
   const cards = [
     <Card1 key={1} z_sign={user.z_sign} today={today} />,

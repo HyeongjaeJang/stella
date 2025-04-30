@@ -125,13 +125,13 @@ model weekly_work {
   week_start    DateTime
   week_end      DateTime
   total_score   Int
-  summary       String?  @db.VarChar(100)
+  summary       String?  @db.VarChar(999)
   productivity  Int
   creativity    Int
   challenge     Int
   energy        Int
   days_analysis Json
-  advice        String   @db.VarChar(100)
+  advice        String   @db.VarChar(999)
   users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_work_user_id_foreign")
 }
 
@@ -141,13 +141,13 @@ model weekly_people {
   week_start    DateTime
   week_end      DateTime
   total_score   Int
-  summary       String   @db.VarChar(100)
+  summary       String?  @db.VarChar(999)
   love          Int
   friendship    Int
   family        Int
   work          Int
   days_analysis Json
-  advice        String   @db.VarChar(100)
+  advice        String   @db.VarChar(999)
   users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_people_user_id_foreign")
 }
 
@@ -157,12 +157,12 @@ model weekly_finance {
   week_start    DateTime
   week_end      DateTime
   total_score   Int
-  summary       String   @db.VarChar(100)
+  summary       String?  @db.VarChar(999)
   income        Int
   expense       Int
   invest        Int
   days_analysis Json
-  advice        String   @db.VarChar(100)
+  advice        String   @db.VarChar(999)
   users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_finance_user_id_foreign")
 }
 
@@ -172,12 +172,12 @@ model weekly_health {
   week_start    DateTime
   week_end      DateTime
   total_score   Int
-  summary       String   @db.VarChar(100)
+  summary       String?  @db.VarChar(999)
   state         Int
   activity      Int
   warning       Int
   days_analysis Json
-  advice        String   @db.VarChar(100)
+  advice        String   @db.VarChar(999)
   users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_health_user_id_foreign")
 }
 
@@ -187,11 +187,11 @@ model weekly_mood {
   week_start    DateTime
   week_end      DateTime
   total_score   Int
-  summary       String
+  summary       String?  @db.VarChar(999)
   mood          Int
   energy        Int
   stress        Int
   days_analysis Json
-  advice        String
+  advice        String   @db.VarChar(999)
   users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_mood_user_id_foreign")
 }

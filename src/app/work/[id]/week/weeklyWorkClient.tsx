@@ -1,9 +1,10 @@
 "use client";
 
 import Header from "@/app/ui/home/header";
-import Days from "@/app/ui/week/days";
+// import Days from "@/app/ui/week/days";
 import { Suspense } from "react";
 import { PropsUser } from "@/types/types";
+import Fortune from "@/app/ui/week/fourtune";
 
 type WeeklyWork = {
   advice: string;
@@ -33,37 +34,24 @@ const WeeklyWorkClient = ({
         <div className="flex flex-col h-screen">
           <Header name={user?.name} />
           <div className="flex flex-col p-4">
-            <div className="flex flex-col mt-5 bg-button w-full justify-center items-center p-4 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold text-white">Weekly Work</h2>
-              <p className="text-xl text-white my-4">
-                Total Score: <strong>{weeklyWork?.total_score}</strong>
-              </p>
-              <hr className="border-gray-200 border-[1px] w-full" />
-              <div className="flex flex-wrap gap-2 p-4 text-white">
-                <div className="w-44">
-                  <p>
-                    Creativity: <strong>{weeklyWork?.creativity}</strong>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    Productivity: <strong>{weeklyWork?.productivity}</strong>
-                  </p>
-                </div>
-                <div className="w-44">
-                  <p>
-                    Energy: <strong>{weeklyWork?.energy}</strong>
-                  </p>
-                </div>
-                <div>
-                  <p>
-                    Challenge: <strong>{weeklyWork?.challenge}</strong>
-                  </p>
-                </div>
+            <h2 className="text-2xl font-extralight mb-4">
+              {"This week's work fortune"}
+            </h2>
+            <div className="flex justify-between bg-gray-200 dark:bg-white/10 p-5 rounded-lg items-center">
+              <div className="bg-[#8ea8ff]/50 p-4 border-2 border-[#8ea8ff]/100 rounded-xxl flex justify-center items-center">
+                <p className="text-3xl text-white">{weeklyWork?.total_score}</p>
+              </div>
+              <div className="flex flex-col justify-center items-start text-xs w-56">
+                <p className="mb-2 font-semibold">Summary about work fortune</p>
+                <li>Weekly Score: {weeklyWork?.total_score}/100</li>
+                <li>Weekly Advice: {weeklyWork?.advice}</li>
               </div>
             </div>
-            <hr className="border-button border-[1px] w-full mt-8" />
-            <Days days={weeklyWork?.days_analysis} />
+            <Fortune weeklyWork={weeklyWork} />
+            <div className="mt-8 flex flex-col gap-3">
+              <h3 className="text-lg font-thin">Weekly Summary</h3>
+              <p className="text-sm font-thin">{weeklyWork?.summary}</p>
+            </div>
           </div>
         </div>
       )}
