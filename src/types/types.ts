@@ -64,6 +64,25 @@ export type ZodiaWeeklyWorkType = {
   advice: string;
 };
 
+export type ZodiacWeeklyPeopleType = {
+  summary: string;
+  total_score: number;
+  love: number;
+  friendship: number;
+  family: number;
+  work: number;
+  days_analysis: {
+    Mon: string;
+    Tue: string;
+    Wed: string;
+    Thu: string;
+    Fri: string;
+    Sat: string;
+    Sun: string;
+  };
+  advice: string;
+};
+
 export type PropsUser = {
   id: string;
   name: string;

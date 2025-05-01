@@ -8,6 +8,7 @@ import {
   Zinfo,
   ZodiacGeneratedData,
   ZodiaWeeklyWorkType,
+  ZodiacWeeklyPeopleType,
 } from "@/types/types";
 
 const client = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
@@ -171,6 +172,61 @@ Return **only valid JSON** like this:
     "Sun": "Avoid multitasking and stay mindful. Rest will sharpen your thinking for next week."
   },
   "advice": "Balance intensity with recovery—pushing too hard all week may backfire by Sunday."
+}
+`;
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching weekly work data:", error);
+  }
+};
+
+export const getWeeklyPeople = async (
+  data: Zinfo,
+): Promise<ZodiacWeeklyPeopleType | undefined> => {
+  const { name, birth_date, birth_time, gender, city, z_sign } = data;
+
+  const prompt = `
+You are a relationship coach and astrologer.
+
+Based on the user's zodiac and birth data, generate a weekly PEOPLE report including:
+
+🔹 Total Score (0~100)
+🔹 Metrics (0–10 scale): love, friendship, family, work
+🔹 Summary: Write at least 3 full sentences that provide a meaningful and varied overview of the week. Highlight trends or shifts (e.g., early-week challenges, mid-week growth, weekend rest), not just generic descriptions.
+🔹 Daily analysis (Mon–Sun): For each day, write **2 distinct sentences** describing the user's mindset, or emotional state. Avoid repeating sentences or phrasing across different days.
+🔹 Advice: 1-sentence advice
+
+Input:
+- Name: ${name}
+- Birth date: ${birth_date}
+- Birth time: ${birth_time}
+- Gender: ${gender}
+- City: ${city}
+- Zodiac Sign: ${z_sign}
+
+Return only JSON:
+{
+  "summary": "...",
+  "total_score": 78,
+  "love": 8,
+  "friendship": 6,
+  "family": 7,
+  "work": 5,
+  "days_analysis": {
+    "Mon": "...",
+    "Tue": "...",
+    ...
+  },
+  "advice": "..."
 }
 `;
   try {

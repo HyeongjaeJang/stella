@@ -1,6 +1,7 @@
 import { useState } from "react";
-// import Image from "next/image";
-// import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import arrow from "../../../../public/arrow.svg";
 
 type DaysProps = {
   days?: Record<string, string>;
@@ -39,16 +40,18 @@ const Days = ({ days }: DaysProps) => {
               >
                 <div className="flex w-full justify-between items-center">
                   <p className="font-bold">{day}</p>
-                  <p className="text-sm">{openDay === day ? "▲" : "▼"}</p>
-                  {/* <motion.div> */}
-                  {/*   <Image */}
-                  {/*     src={"/arrow.png"} */}
-                  {/*     alt="arrow" */}
-                  {/*     width={30} */}
-                  {/*     height={30} */}
-                  {/*     className="bg-cover" */}
-                  {/*   /> */}
-                  {/* </motion.div> */}
+                  <motion.div
+                    animate={{ rotate: openDay === day ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-3 h-3 relative pr-2"
+                  >
+                    <Image
+                      src={arrow.src}
+                      alt="arrow"
+                      fill
+                      className="object-contain"
+                    />
+                  </motion.div>
                 </div>
                 {openDay === day && (
                   <p className="text-sm mt-1 p-1 w-full">{text}</p>

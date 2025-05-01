@@ -14,7 +14,9 @@ const Page = async ({ params }: PageProps) => {
   }
 
   const weeklyWork = await getWeeklyWorkData(id);
-  if (weeklyWork) {
+  if (!weeklyWork) {
+    console.error("❌ Weekly work data not found");
+    return <div>Weekly work data not found</div>;
   }
   const fixedWeeklyWork = {
     ...weeklyWork,
