@@ -9,6 +9,9 @@ import {
   ZodiacGeneratedData,
   ZodiaWeeklyWorkType,
   ZodiacWeeklyPeopleType,
+  ZodiacWeeklyFinanceType,
+  ZodiacWeeklyHealthType,
+  ZodiacWeeklyMoodType,
 } from "@/types/types";
 
 const client = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
@@ -224,6 +227,165 @@ Return only JSON:
   "days_analysis": {
     "Mon": "...",
     "Tue": "...",
+    ...
+  },
+  "advice": "..."
+}
+`;
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching weekly work data:", error);
+  }
+};
+
+export const getWeeklyFinance = async (
+  data: Zinfo,
+): Promise<ZodiacWeeklyFinanceType | undefined> => {
+  const { name, birth_date, birth_time, gender, city, z_sign } = data;
+
+  const prompt = `
+You are a financial astrologer.
+
+Generate a weekly FINANCE report including:
+
+🔹 Total Score (0–100)
+🔹 Metrics (0–10 scale): income, expense, invest
+🔹 summary: write at least 3 full sentences that provide a meaningful and varied overview of the week. highlight trends or shifts (e.g., early-week challenges, mid-week growth, weekend rest), not just generic descriptions.
+🔹 Daily analysis (Mon–Sun): For each day, write **2 distinct sentences** describing the user's mindset, or emotional state. Avoid repeating sentences or phrasing across different days.
+🔹 Advice: 1-sentence for financial balance
+
+Input:
+- Name: ${name}
+- Birth date: ${birth_date}
+- Birth time: ${birth_time}
+- Gender: ${gender}
+- City: ${city}
+- Zodiac Sign: ${z_sign}
+
+Return only JSON:
+{
+  "summary": "...",
+  "total_score": 80,
+  "income": 7,
+  "expense": 4,
+  "invest": 6,
+  "days_analysis": {
+    "Mon": "...",
+    ...
+  },
+  "advice": "..."
+}
+`;
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching weekly work data:", error);
+  }
+};
+
+export const getWeeklyHealth = async (
+  data: Zinfo,
+): Promise<ZodiacWeeklyHealthType | undefined> => {
+  const { name, birth_date, birth_time, gender, city, z_sign } = data;
+
+  const prompt = `
+You are a holistic health astrologer.
+
+Generate a weekly HEALTH report:
+
+🔹 Total Score (0–100)
+🔹 Metrics (0–10): state, activity, warning
+🔹 summary: write at least 3 full sentences that provide a meaningful and varied overview of the week. highlight trends or shifts (e.g., early-week challenges, mid-week growth, weekend rest), not just generic descriptions.
+🔹 Daily analysis (Mon–Sun): For each day, write **2 distinct sentences** describing the user's mindset, or emotional state. Avoid repeating sentences or phrasing across different days.
+🔹 Advice: 1-sentence health advice
+
+Input:
+- Name: ${name}
+- Birth date: ${birth_date}
+- Birth time: ${birth_time}
+- Gender: ${gender}
+- City: ${city}
+- Zodiac Sign: ${z_sign}
+
+Return JSON:
+{
+  "summary": "...",
+  "total_score": 73,
+  "state": 6,
+  "activity": 7,
+  "warning": 3,
+  "days_analysis": {
+    "Mon": "...",
+    ...
+  },
+  "advice": "..."
+}
+`;
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching weekly work data:", error);
+  }
+};
+
+export const getWeeklyMood = async (
+  data: Zinfo,
+): Promise<ZodiacWeeklyMoodType | undefined> => {
+  const { name, birth_date, birth_time, gender, city, z_sign } = data;
+
+  const prompt = `
+You are an emotional well-being astrologer.
+
+Create a weekly MOOD report with:
+
+🔹 Total Score (0–100)
+🔹 Metrics (0–10): mood, energy, stress
+🔹 summary: write at least 3 full sentences that provide a meaningful and varied overview of the week. highlight trends or shifts (e.g., early-week challenges, mid-week growth, weekend rest), not just generic descriptions.
+🔹 Daily analysis (Mon–Sun): For each day, write **2 distinct sentences** describing the user's mindset, or emotional state. Avoid repeating sentences or phrasing across different days.
+🔹 Advice: 1-sentence mood stabilizer
+
+Input:
+- Name: ${name}
+- Birth date: ${birth_date}
+- Birth time: ${birth_time}
+- Gender: ${gender}
+- City: ${city}
+- Zodiac Sign: ${z_sign}
+
+Return only JSON:
+{
+  "summary": "...",
+  "total_score": 75,
+  "mood": 6,
+  "energy": 7,
+  "stress": 4,
+  "days_analysis": {
+    "Mon": "...",
     ...
   },
   "advice": "..."

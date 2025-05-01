@@ -83,6 +83,60 @@ export type ZodiacWeeklyPeopleType = {
   advice: string;
 };
 
+export type ZodiacWeeklyFinanceType = {
+  summary: string;
+  total_score: number;
+  income: number;
+  expense: number;
+  invest: number;
+  days_analysis: {
+    Mon: string;
+    Tue: string;
+    Wed: string;
+    Thu: string;
+    Fri: string;
+    Sat: string;
+    Sun: string;
+  };
+  advice: string;
+};
+
+export type ZodiacWeeklyHealthType = {
+  summary: string;
+  total_score: number;
+  state: number;
+  activity: number;
+  warning: number;
+  days_analysis: {
+    Mon: string;
+    Tue: string;
+    Wed: string;
+    Thu: string;
+    Fri: string;
+    Sat: string;
+    Sun: string;
+  };
+  advice: string;
+};
+
+export type ZodiacWeeklyMoodType = {
+  summary: string;
+  total_score: number;
+  mood: number;
+  energy: number;
+  stress: number;
+  days_analysis: {
+    Mon: string;
+    Tue: string;
+    Wed: string;
+    Thu: string;
+    Fri: string;
+    Sat: string;
+    Sun: string;
+  };
+  advice: string;
+};
+
 export type PropsUser = {
   id: string;
   name: string;

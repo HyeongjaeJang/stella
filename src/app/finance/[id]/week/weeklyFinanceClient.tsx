@@ -1,19 +1,18 @@
 "use client";
 
 import Header from "@/app/ui/home/header";
+import FinanceFortune from "@/app/ui/week/financeFourtune";
 import Days from "@/app/ui/week/days";
 import { Suspense } from "react";
 import { PropsUser } from "@/types/types";
-import PeopleFortune from "@/app/ui/week/peopleFourtune";
 
-type WeeklyPeople = {
+type WeeklyFinance = {
   advice: string;
-  love?: number;
-  family?: number;
+  income?: number;
+  expense?: number;
   days_analysis: Record<string, string>;
-  friendship?: number;
+  invest?: number;
   id?: number;
-  work?: number;
   summary: string;
   total_score?: number;
   user_id?: number;
@@ -21,12 +20,12 @@ type WeeklyPeople = {
   week_start: Date;
 };
 
-const WeeklyPeopleClient = ({
+const WeeklyFinanceClient = ({
   user,
-  weeklyPeople,
+  weeklyFinance,
 }: {
   user: PropsUser;
-  weeklyPeople: WeeklyPeople;
+  weeklyFinance: WeeklyFinance;
 }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -35,28 +34,28 @@ const WeeklyPeopleClient = ({
           <Header name={user?.name} />
           <div className="flex flex-col p-4">
             <h2 className="text-2xl font-extralight mb-4">
-              {"This week's people fortune"}
+              {"This week's finance fortune"}
             </h2>
             <div className="flex justify-between bg-gray-200 dark:bg-white/10 p-5 rounded-lg items-center">
               <div className="bg-[#8ea8ff]/50 p-4 border-2 border-[#8ea8ff]/100 rounded-xxl flex justify-center items-center">
                 <p className="text-3xl text-white">
-                  {weeklyPeople?.total_score}
+                  {weeklyFinance?.total_score}
                 </p>
               </div>
               <div className="flex flex-col justify-center items-start text-xs w-56">
                 <p className="mb-2 font-semibold">
-                  Summary about people fortune
+                  Summary about finance fortune
                 </p>
-                <li>Weekly Score: {weeklyPeople?.total_score}/100</li>
-                <li>Weekly Advice: {weeklyPeople?.advice}</li>
+                <li>Weekly Score: {weeklyFinance?.total_score}/100</li>
+                <li>Weekly Advice: {weeklyFinance?.advice}</li>
               </div>
             </div>
-            <PeopleFortune weeklyPeople={weeklyPeople} />
+            <FinanceFortune weeklyFinance={weeklyFinance} />
             <div className="mt-8 flex flex-col gap-3">
               <h3 className="text-lg font-thin">Weekly Summary</h3>
-              <p className="text-sm font-thin">{weeklyPeople?.summary}</p>
+              <p className="text-sm font-thin">{weeklyFinance?.summary}</p>
             </div>
-            <Days days={weeklyPeople?.days_analysis} />
+            <Days days={weeklyFinance?.days_analysis} />
           </div>
         </div>
       )}
@@ -64,4 +63,4 @@ const WeeklyPeopleClient = ({
   );
 };
 
-export default WeeklyPeopleClient;
+export default WeeklyFinanceClient;
