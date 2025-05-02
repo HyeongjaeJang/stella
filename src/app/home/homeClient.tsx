@@ -27,7 +27,7 @@ export default function HomeClient({
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen">
-        <Header name={user.name} />
+        <Header name={user.name} user={user} />
         <div className="p-5">
           <p className="text-xl font-thin text-black dark:text-white">
             {`Hi ${user.name}, how's your day?`}

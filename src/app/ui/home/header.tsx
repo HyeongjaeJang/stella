@@ -14,8 +14,14 @@ import { LogOut } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { PropsUser } from "@/types/types";
 
-const Header = ({ name }: { name: string }) => {
+type HeaderProps = {
+  name: string;
+  user?: PropsUser;
+};
+
+const Header = ({ name, user }: HeaderProps) => {
   const { theme, setTheme } = useTheme();
   const initial = name.charAt(0).toUpperCase();
   const router = useRouter();
@@ -48,9 +54,8 @@ const Header = ({ name }: { name: string }) => {
           <DropdownMenuContent className="mr-2">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleLogout()}>
-              LogOut
+            <DropdownMenuItem>
+              <Link href={`/profile/${user?.id}`}>Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
@@ -58,6 +63,9 @@ const Header = ({ name }: { name: string }) => {
               }
             >
               Theme
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLogout()}>
+              LogOut
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

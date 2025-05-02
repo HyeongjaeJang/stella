@@ -39,7 +39,7 @@ export async function createUser(userData: userData) {
         password: hashedPassword,
         birth_date: userData.birth_date ? new Date(userData.birth_date) : null,
         birth_time: userData.birth_time
-          ? new Date(`1970-01-01T${userData.birth_time}Z`)
+          ? new Date(`${userData.birth_date}T${userData.birth_time}Z`)
           : null,
         gender: userData.gender,
         city_country: userData.city_country,
@@ -95,7 +95,7 @@ export async function getZodiacInfo(email: string) {
       const data = {
         name: user.name,
         birth_date: user?.birth_date?.toISOString(),
-        birth_time: user?.birth_time?.toISOString(),
+        birth_time: user?.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
@@ -149,6 +149,18 @@ export async function getUser() {
     return await auth();
   } catch (error) {
     console.error("❌ Auth error:", error);
+  }
+}
+
+export async function getUserInfo(id: string) {
+  try {
+    const parseId = parseInt(id);
+    return await client.user.findFirst({
+      where: { id: parseId },
+      omit: { password: true },
+    });
+  } catch (error) {
+    console.error("❌ Get user info error:", error);
   }
 }
 
@@ -325,7 +337,7 @@ export async function getWeeklyWorkData(id: string) {
       const data = {
         name: user.name,
         birth_date: user.birth_date?.toISOString(),
-        birth_time: user.birth_time?.toISOString(),
+        birth_time: user.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
@@ -397,7 +409,7 @@ export async function getWeeklyPeopleData(id: string) {
       const data = {
         name: user.name,
         birth_date: user.birth_date?.toISOString(),
-        birth_time: user.birth_time?.toISOString(),
+        birth_time: user.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
@@ -469,7 +481,7 @@ export async function getWeeklyFinanceData(id: string) {
       const data = {
         name: user.name,
         birth_date: user.birth_date?.toISOString(),
-        birth_time: user.birth_time?.toISOString(),
+        birth_time: user.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
@@ -540,7 +552,7 @@ export async function getWeeklyHealthData(id: string) {
       const data = {
         name: user.name,
         birth_date: user.birth_date?.toISOString(),
-        birth_time: user.birth_time?.toISOString(),
+        birth_time: user.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
@@ -611,7 +623,7 @@ export async function getWeeklyMoodData(id: string) {
       const data = {
         name: user.name,
         birth_date: user.birth_date?.toISOString(),
-        birth_time: user.birth_time?.toISOString(),
+        birth_time: user.birth_time?.toISOString().slice(11, 16),
         gender: user.gender,
         city: user.city_country,
         z_sign: user.z_sign,
