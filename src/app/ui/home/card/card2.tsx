@@ -20,9 +20,9 @@ const Card2 = ({ work }: { work: Work }) => {
               <p>Creativity:</p>
               <p className="font-semibold">{work?.creativity}</p>
             </div>
-            <div className="flex text-sm gap-2">
+            <div className="flex justify-center text-sm gap-2">
               <p>Challenge:</p>
-              <p className="font-semibold">{work?.challenge}</p>
+              <p className="font-semibold w-1/2">{work?.challenge}</p>
             </div>
             <div className="flex text-sm gap-2 p-1">
               <p>{work?.text}</p>

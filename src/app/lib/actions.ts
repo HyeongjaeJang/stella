@@ -16,6 +16,7 @@ import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
 import { startOfToday, isBefore, endOfWeek, startOfWeek } from "date-fns";
 import { Prisma } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export async function createUser(userData: userData) {
   try {
@@ -676,4 +677,25 @@ export async function getWeeklyMoodData(id: string) {
   } catch (error) {
     console.error("❌ Get weekly Mood data error:", error);
   }
+}
+
+export async function editUser(id: number, formData: FormData) {
+  const name = formData.get("name")?.toString();
+  const birth_date = formData.get("dateOfBirth")?.toString();
+  const birth_time = formData.get("time")?.toString();
+  const gender = formData.get("gender")?.toString();
+  const city_country = formData.get("city_country")?.toString();
+
+  await client.user.update({
+    where: { id },
+    data: {
+      name,
+      gender,
+      city_country,
+      birth_date: birth_date ? new Date(birth_date) : undefined,
+      birth_time: birth_time ? new Date(`${birth_date}T${birth_time}Z`) : null,
+    },
+  });
+
+  redirect(`/profile/${id}`);
 }

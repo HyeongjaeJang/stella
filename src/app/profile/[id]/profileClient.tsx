@@ -7,6 +7,8 @@ import Image from "next/image";
 import sun from "../../../../public/sun.svg";
 import moon from "../../../../public/moon.svg";
 import star from "../../../../public/star.svg";
+import arrow from "../../../../public/sideArrow.svg";
+import Link from "next/link";
 
 type Today =
   | {
@@ -88,8 +90,10 @@ const ProfileClient = ({
                       {info?.birth_time?.toISOString().slice(11, 16)}
                     </p>
                   </div>
-                  <div className="text-sm text-black bg-white p-2 py-1 rounded-lg w-fit">
-                    <button>Edit</button>
+                  <div className="text-xs text-black bg-white p-2 py-1 rounded-lg w-fit cursor-pointer">
+                    <Link key={"edit"} href={`/profile/${user.id}/edit`}>
+                      Edit
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -124,6 +128,30 @@ const ProfileClient = ({
               </div>
               <div className="mt-6">
                 <h4>Settings</h4>
+                <div className="flex justify-between items-center mt-4 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">Account</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
+                <div className="flex justify-between items-center mt-2 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">Notification</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
+                <div className="flex justify-between items-center mt-2 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">Appearance</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
+                <div className="flex justify-between items-center mt-2 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">Privacy & Security</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
+                <div className="flex justify-between items-center mt-2 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">Help & Support</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
+                <div className="flex justify-between items-center mt-2 bg-gray-300 dark:bg-white/5 p-3 px-4 rounded-lg">
+                  <div className="font-thin text-sm">About</div>
+                  <Image src={arrow} alt="arrow" width={8} height={8} />
+                </div>
               </div>
             </div>
           </div>

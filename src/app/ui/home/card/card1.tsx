@@ -35,7 +35,7 @@ const Card1 = ({ z_sign, today }: { z_sign: string | null; today: Today }) => {
                 <div>Number:</div>
                 <div className="font-bold">{today.number}</div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 px-3">
                 <div>Item:</div>
                 <div className="font-bold">{today.item}</div>
               </div>
