@@ -17,13 +17,12 @@ import { useTheme } from "next-themes";
 import { PropsUser } from "@/types/types";
 
 type HeaderProps = {
-  name: string;
   user?: PropsUser;
 };
 
-const Header = ({ name, user }: HeaderProps) => {
+const Header = ({ user }: HeaderProps) => {
   const { theme, setTheme } = useTheme();
-  const initial = name.charAt(0).toUpperCase();
+  const initial = user?.name.charAt(0).toUpperCase();
   const router = useRouter();
 
   const handleLogout = async () => {

@@ -26,7 +26,13 @@ export type Zinfo = {
 };
 
 export type ZodiacGeneratedData = {
-  today: { number: number; color: string; item: string; total_score: number };
+  today: {
+    number: number;
+    color: string;
+    item: string;
+    text: string;
+    total_score: number;
+  };
   finance: { income: number; expense: number; invest: number; text: string };
   health: { state: string; activity: string; warning: string; text: string };
   work: {

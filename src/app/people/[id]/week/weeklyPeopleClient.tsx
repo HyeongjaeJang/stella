@@ -4,7 +4,7 @@ import Header from "@/app/ui/home/header";
 import Days from "@/app/ui/week/days";
 import { Suspense } from "react";
 import { PropsUser } from "@/types/types";
-import PeopleFortune from "@/app/ui/week/peopleFourtune";
+import PeopleFortune from "@/app/ui/week/peopleFortune";
 
 type WeeklyPeople = {
   advice: string;
@@ -32,7 +32,7 @@ const WeeklyPeopleClient = ({
     <Suspense fallback={<div>Loading...</div>}>
       {user && (
         <div className="flex flex-col h-screen">
-          <Header name={user?.name} />
+          <Header user={user} />
           <div className="flex flex-col p-4">
             <h2 className="text-2xl font-extralight mb-4">
               {"This week's people fortune"}

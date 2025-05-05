@@ -15,6 +15,7 @@ import { AuthError } from "next-auth";
 import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
 import { startOfToday, isBefore, endOfWeek, startOfWeek } from "date-fns";
+import { Prisma } from "@prisma/client";
 
 export async function createUser(userData: userData) {
   try {
@@ -66,65 +67,84 @@ export async function getZodiacInfo(email: string) {
 
     const userId = user.id;
 
-    const existing = await client.today.findFirst({
-      where: { user_id: userId },
-    });
-
-    if (existing && isBefore(existing.created_at!, startOfToday())) {
-      await Promise.all([
-        client.today.deleteMany({ where: { user_id: userId } }),
-        client.todays_finance.deleteMany({ where: { user_id: userId } }),
-        client.todays_health.deleteMany({ where: { user_id: userId } }),
-        client.todays_work.deleteMany({ where: { user_id: userId } }),
-        client.todays_relationship.deleteMany({ where: { user_id: userId } }),
-        client.todays_mood.deleteMany({ where: { user_id: userId } }),
-      ]);
-      console.log("🗑️ Old today data removed");
-    }
-
     const existingToday = await client.today.findFirst({
       where: {
         user_id: userId,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
     });
 
-    if (!existingToday) {
-      const data = {
-        name: user.name,
-        birth_date: user?.birth_date?.toISOString(),
-        birth_time: user?.birth_time?.toISOString().slice(11, 16),
-        gender: user.gender,
-        city: user.city_country,
-        z_sign: user.z_sign,
-      };
-
-      const res = await getZodiacData(data);
-      if (!res) return;
-
-      await client.$transaction([
-        client.today.create({ data: { user_id: userId, ...res.today } }),
-        client.todays_finance.create({
-          data: { user_id: userId, ...res.finance },
-        }),
-        client.todays_health.create({
-          data: { user_id: userId, ...res.health },
-        }),
-        client.todays_work.create({ data: { user_id: userId, ...res.work } }),
-        client.todays_relationship.create({
-          data: { user_id: userId, ...res.relationship },
-        }),
-        client.todays_mood.create({ data: { user_id: userId, ...res.mood } }),
-      ]);
-
-      console.log("✅ All zodiac-related data inserted successfully.");
-    } else {
+    if (existingToday) {
       console.log("🟡 Today's data already exists");
+      return;
     }
+
+    const data = {
+      name: user.name,
+      birth_date: user?.birth_date?.toISOString(),
+      birth_time: user?.birth_time?.toISOString().slice(11, 16),
+      gender: user.gender,
+      city: user.city_country,
+      z_sign: user.z_sign,
+    };
+
+    const res = await getZodiacData(data);
+    if (!res) return;
+
+    (["number", "total_score"] as const).forEach((key) => {
+      if (typeof res.today[key] !== "number") {
+        throw new Error(`Invalid data: today.${key} is not a number`);
+      }
+    });
+
+    (["income", "expense", "invest"] as const).forEach((key) => {
+      if (typeof res.finance[key] !== "number") {
+        throw new Error(`Invalid data: finance.${key} is not a number`);
+      }
+    });
+
+    await client.$transaction([
+      client.today.upsert({
+        where: { user_id: userId },
+        update: { ...res.today, updated_at: new Date() },
+        create: { user_id: userId, ...res.today },
+      }),
+      client.todays_finance.upsert({
+        where: { user_id: userId },
+        update: { ...res.finance, updated_at: new Date() },
+        create: { user_id: userId, ...res.finance },
+      }),
+      client.todays_health.upsert({
+        where: { user_id: userId },
+        update: { ...res.health, updated_at: new Date() },
+        create: { user_id: userId, ...res.health },
+      }),
+      client.todays_work.upsert({
+        where: { user_id: userId },
+        update: { ...res.work, updated_at: new Date() },
+        create: { user_id: userId, ...res.work },
+      }),
+      client.todays_relationship.upsert({
+        where: { user_id: userId },
+        update: { ...res.relationship, updated_at: new Date() },
+        create: { user_id: userId, ...res.relationship },
+      }),
+      client.todays_mood.upsert({
+        where: { user_id: userId },
+        update: { ...res.mood, updated_at: new Date() },
+        create: { user_id: userId, ...res.mood },
+      }),
+    ]);
+
+    console.log("✅ All zodiac-related data upserted successfully.");
   } catch (error) {
-    console.error("❌ Get zodiac info error:", error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error("💥 Prisma error:", error.code, error.message);
+    } else {
+      console.error("❌ Get zodiac info error:", error);
+    }
   }
 }
 
@@ -183,7 +203,7 @@ export async function getToday(email: string) {
     const exToday = await client.today.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
@@ -205,7 +225,7 @@ export async function getTodayWork(email: string) {
     const exToday = await client.todays_work.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
@@ -227,7 +247,7 @@ export async function getTodayPeople(email: string) {
     const exToday = await client.todays_relationship.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
@@ -248,7 +268,7 @@ export async function getTodayFinance(email: string) {
     const exToday = await client.todays_finance.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
@@ -269,7 +289,7 @@ export async function getTodayHealth(email: string) {
     const exToday = await client.todays_health.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },
@@ -290,7 +310,7 @@ export async function getTodayMood(email: string) {
     const exToday = await client.todays_mood.findFirst({
       where: {
         user_id: user.id,
-        created_at: {
+        updated_at: {
           gte: startOfToday(),
         },
       },

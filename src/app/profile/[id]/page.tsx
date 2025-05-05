@@ -1,6 +1,6 @@
 "use server";
 
-import { getUser, getUserInfo } from "@/app/lib/actions";
+import { getToday, getUser, getUserInfo } from "@/app/lib/actions";
 import ProfileClient from "./profileClient";
 
 interface PageProps {
@@ -15,11 +15,10 @@ const Page = async ({ params }: PageProps) => {
     return;
   }
 
-  const info = await getUserInfo(res.user.id);
-  console.log(info?.birth_date?.toISOString().slice(0, 10));
-  console.log(info?.birth_time?.toISOString().slice(11, 16));
+  const today = await getToday(res.user.email);
+  const info = await getUserInfo(id);
 
-  return <ProfileClient user={res.user} />;
+  return <ProfileClient user={res.user} today={today} info={info} />;
 };
 
 export default Page;
