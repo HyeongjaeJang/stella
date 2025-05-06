@@ -5,7 +5,7 @@ import Buttons from "@/app/ui/home/buttons";
 import Cards from "@/app/ui/home/cards";
 import { Suspense } from "react";
 import { Today, Work, People, Finance, Health, Mood } from "@/types/cardTypes";
-import { PropsUser } from "@/types/types";
+import { PropsUser, Info } from "@/types/types";
 
 export default function HomeClient({
   user,
@@ -15,6 +15,7 @@ export default function HomeClient({
   finance,
   health,
   mood,
+  info,
 }: {
   user: PropsUser;
   today: Today;
@@ -23,11 +24,19 @@ export default function HomeClient({
   finance: Finance;
   health: Health;
   mood: Mood;
+  info: Info;
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen">
-        <Header user={user} />
+        <Header
+          user={{
+            id: info.id.toString(),
+            name: info.name,
+            z_sign: info.z_sign,
+            email: info.email,
+          }}
+        />
         <div className="p-5">
           <p className="text-xl font-thin text-black dark:text-white">
             {`Hi ${user.name}, how's your day?`}

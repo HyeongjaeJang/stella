@@ -2,7 +2,8 @@
 
 import { Suspense } from "react";
 import Header from "@/app/ui/home/header";
-import { PropsUser } from "@/types/types";
+import { Today } from "@/types/cardTypes";
+import { PropsUser, Info } from "@/types/types";
 import Image from "next/image";
 import sun from "../../../../public/sun.svg";
 import moon from "../../../../public/moon.svg";
@@ -10,44 +11,13 @@ import star from "../../../../public/star.svg";
 import arrow from "../../../../public/sideArrow.svg";
 import Link from "next/link";
 
-type Today =
-  | {
-      number: number | null;
-      id: number;
-      user_id: number;
-      created_at: Date | null;
-      updated_at: Date | null;
-      color: string | null;
-      item: string | null;
-      text: string | null;
-      total_score: number | null;
-    }
-  | null
-  | undefined;
-
-type Info =
-  | {
-      id: number;
-      name: string;
-      email: string;
-      birth_date: Date | null;
-      birth_time: Date | null;
-      gender: string | null;
-      city_country: string | null;
-      z_sign: string | null;
-      createdAt: Date | null;
-      updatedAt: Date | null;
-    }
-  | null
-  | undefined;
-
 const ProfileClient = ({
   user,
   today,
   info,
 }: {
   user: PropsUser;
-  today: Today;
+  today: Today | null | undefined;
   info: Info;
 }) => {
   const handleScoreColor = (score: number | null | undefined) => {
@@ -66,7 +36,14 @@ const ProfileClient = ({
     <Suspense fallback={<div>Loading...</div>}>
       {user && (
         <div className="flex flex-col h-screen">
-          <Header user={user} />
+          <Header
+            user={{
+              id: info.id.toString(),
+              name: info.name,
+              z_sign: info.z_sign,
+              email: info.email,
+            }}
+          />
           <div className="flex flex-col p-4">
             <div>
               <h2 className="text-2xl font-thin mb-4">Profile</h2>
@@ -81,7 +58,7 @@ const ProfileClient = ({
                   />
                 </div>
                 <div className="w-2/3 flex flex-col gap-2">
-                  <p className="font-semibold">{user.name}</p>
+                  <p className="font-semibold">{info.name}</p>
                   <div className="flex">
                     <p className="text-sm">
                       {info?.birth_date?.toISOString().slice(0, 10)}

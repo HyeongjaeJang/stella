@@ -225,7 +225,12 @@ const EditClient = ({
           </select>
         </div>
 
-        <button type="submit">Update</button>
+        <button
+          className="bg-gray-200 text-black w-1/3 self-center p-2 rounded-xl font-semibold shadow-lg shadow-white/10"
+          type="submit"
+        >
+          Update
+        </button>
       </form>
     </div>
   );

@@ -22,7 +22,7 @@ const Card5 = ({ health }: { health: Health }) => {
             </div>
             <div className="flex justify-center text-sm gap-2">
               <p>Warning:</p>
-              <p className="font-semibold w-1/2">{health?.warning}</p>
+              <p className="font-semibold w-fit">{health?.warning}</p>
             </div>
             <div className="flex text-sm gap-2 p-2">
               <p>{health?.text}</p>

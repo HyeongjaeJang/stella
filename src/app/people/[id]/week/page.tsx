@@ -1,4 +1,4 @@
-import { getWeeklyPeopleData, getUser } from "@/app/lib/actions";
+import { getWeeklyPeopleData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyPeopleClient from "./weeklyPeopleClient";
 
 interface PageProps {
@@ -30,9 +30,11 @@ const Page = async ({ params }: PageProps) => {
     week_end: weeklyPeople?.week_end ?? new Date(),
   };
 
-  return (
-    <WeeklyPeopleClient user={res?.user} weeklyPeople={fixedWeeklyPeople} />
-  );
+  const info = await getUserInfo(id);
+
+  if (!info) return <div>Not found</div>;
+
+  return <WeeklyPeopleClient user={info} weeklyPeople={fixedWeeklyPeople} />;
 };
 
 export default Page;

@@ -3,7 +3,7 @@
 import Header from "@/app/ui/home/header";
 import Days from "@/app/ui/week/days";
 import { Suspense } from "react";
-import { PropsUser } from "@/types/types";
+import { Info } from "@/types/types";
 import MoodFourtune from "@/app/ui/week/moodFortune";
 
 type WeeklyMood = {
@@ -24,14 +24,21 @@ const WeeklyMoodClient = ({
   user,
   weeklyMood,
 }: {
-  user: PropsUser;
+  user: Info;
   weeklyMood: WeeklyMood;
 }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       {user && (
         <div className="flex flex-col h-screen">
-          <Header user={user} />
+          <Header
+            user={{
+              id: user.id.toString(),
+              name: user.name,
+              z_sign: user.z_sign,
+              email: user.email,
+            }}
+          />
           <div className="flex flex-col p-4">
             <h2 className="text-2xl font-extralight mb-4">
               {"This week's mood fortune"}

@@ -149,3 +149,16 @@ export type PropsUser = {
   email: string;
   z_sign: string | null;
 };
+
+export type Info = {
+  id: number;
+  name: string;
+  email: string;
+  birth_date: Date | null;
+  birth_time: Date | null;
+  gender: string | null;
+  city_country: string | null;
+  z_sign: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+};

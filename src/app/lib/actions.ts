@@ -16,6 +16,7 @@ import { auth, signIn, signOut } from "@/auth";
 import { userData } from "@/types/types";
 import { startOfToday, isBefore, endOfWeek, startOfWeek } from "date-fns";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createUser(userData: userData) {
@@ -686,7 +687,16 @@ export async function editUser(id: number, formData: FormData) {
   const gender = formData.get("gender")?.toString();
   const city_country = formData.get("city_country")?.toString();
 
-  await client.user.update({
+  const userData = {
+    name: name ? name : "",
+    birth_date: birth_date ? birth_date : "",
+    birth_time: birth_time ? birth_time : "",
+    gender: gender ? gender : "",
+    city_country: city_country ? city_country : "",
+  };
+  const z_sign = await getZodiac(userData);
+
+  const user = await client.user.update({
     where: { id },
     data: {
       name,
@@ -694,8 +704,78 @@ export async function editUser(id: number, formData: FormData) {
       city_country,
       birth_date: birth_date ? new Date(birth_date) : undefined,
       birth_time: birth_time ? new Date(`${birth_date}T${birth_time}Z`) : null,
+      z_sign,
     },
   });
 
-  redirect(`/profile/${id}`);
+  const userId = user.id;
+
+  try {
+    const data = {
+      name: user.name,
+      birth_date: user?.birth_date?.toISOString(),
+      birth_time: user?.birth_time?.toISOString().slice(11, 16),
+      gender: user.gender,
+      city: user.city_country,
+      z_sign: user.z_sign,
+    };
+
+    const res = await getZodiacData(data);
+    if (!res) return;
+
+    (["number", "total_score"] as const).forEach((key) => {
+      if (typeof res.today[key] !== "number") {
+        throw new Error(`Invalid data: today.${key} is not a number`);
+      }
+    });
+
+    (["income", "expense", "invest"] as const).forEach((key) => {
+      if (typeof res.finance[key] !== "number") {
+        throw new Error(`Invalid data: finance.${key} is not a number`);
+      }
+    });
+
+    await client.$transaction([
+      client.today.upsert({
+        where: { user_id: userId },
+        update: { ...res.today, updated_at: new Date() },
+        create: { user_id: userId, ...res.today },
+      }),
+      client.todays_finance.upsert({
+        where: { user_id: userId },
+        update: { ...res.finance, updated_at: new Date() },
+        create: { user_id: userId, ...res.finance },
+      }),
+      client.todays_health.upsert({
+        where: { user_id: userId },
+        update: { ...res.health, updated_at: new Date() },
+        create: { user_id: userId, ...res.health },
+      }),
+      client.todays_work.upsert({
+        where: { user_id: userId },
+        update: { ...res.work, updated_at: new Date() },
+        create: { user_id: userId, ...res.work },
+      }),
+      client.todays_relationship.upsert({
+        where: { user_id: userId },
+        update: { ...res.relationship, updated_at: new Date() },
+        create: { user_id: userId, ...res.relationship },
+      }),
+      client.todays_mood.upsert({
+        where: { user_id: userId },
+        update: { ...res.mood, updated_at: new Date() },
+        create: { user_id: userId, ...res.mood },
+      }),
+    ]);
+
+    console.log("✅ All zodiac-related data upserted successfully.");
+    revalidatePath(`/profile/${id}`);
+    redirect(`/profile/${id}`);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error("💥 Prisma error:", error.code, error.message);
+    } else {
+      console.error("❌ Get zodiac info error:", error);
+    }
+  }
 }

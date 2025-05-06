@@ -7,6 +7,7 @@ import {
   getTodayFinance,
   getTodayHealth,
   getTodayMood,
+  getUserInfo,
 } from "@/app/lib/actions";
 import HomeClient from "@/app/home/homeClient";
 
@@ -26,10 +27,12 @@ export default async function Page() {
   const finance = await getTodayFinance(res.user.email);
   const health = await getTodayHealth(res.user.email);
   const mood = await getTodayMood(res.user.email);
+  const info = await getUserInfo(res.user.id);
 
   return (
     <HomeClient
       user={res.user}
+      info={info!}
       today={today!}
       work={work!}
       people={people!}

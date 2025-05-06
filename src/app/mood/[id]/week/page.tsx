@@ -1,4 +1,4 @@
-import { getWeeklyMoodData, getUser } from "@/app/lib/actions";
+import { getWeeklyMoodData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyMoodClient from "./weeklyMoodClient";
 
 interface PageProps {
@@ -27,7 +27,11 @@ const Page = async ({ params }: PageProps) => {
     week_end: weeklyMood?.week_end ?? new Date(),
   };
 
-  return <WeeklyMoodClient user={res?.user} weeklyMood={fixedWeeklyMood} />;
+  const info = await getUserInfo(id);
+
+  if (!info) return <div>Not found</div>;
+
+  return <WeeklyMoodClient user={info} weeklyMood={fixedWeeklyMood} />;
 };
 
 export default Page;

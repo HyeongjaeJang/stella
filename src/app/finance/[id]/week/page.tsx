@@ -1,4 +1,4 @@
-import { getWeeklyFinanceData, getUser } from "@/app/lib/actions";
+import { getWeeklyFinanceData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyFinanceClient from "./weeklyFinanceClient";
 
 interface PageProps {
@@ -30,9 +30,11 @@ const Page = async ({ params }: PageProps) => {
     week_end: weeklyFinance?.week_end ?? new Date(),
   };
 
-  return (
-    <WeeklyFinanceClient user={res?.user} weeklyFinance={fixedWeeklyFinance} />
-  );
+  const info = await getUserInfo(id);
+
+  if (!info) return <div>Not found</div>;
+
+  return <WeeklyFinanceClient user={info} weeklyFinance={fixedWeeklyFinance} />;
 };
 
 export default Page;

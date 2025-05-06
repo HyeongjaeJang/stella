@@ -2,6 +2,7 @@ export type Today = {
   color: string | null;
   id: number;
   item: string | null;
+  text: string | null;
   number: number | null;
   total_score: number | null;
   user_id: number | null;

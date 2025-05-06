@@ -1,4 +1,4 @@
-"use server";
+export const dynamic = "force-dynamic";
 
 import { getToday, getUser, getUserInfo } from "@/app/lib/actions";
 import ProfileClient from "./profileClient";
@@ -17,6 +17,8 @@ const Page = async ({ params }: PageProps) => {
 
   const today = await getToday(res.user.email);
   const info = await getUserInfo(id);
+
+  if (!info) return <div>Not found</div>;
 
   return <ProfileClient user={res.user} today={today} info={info} />;
 };
