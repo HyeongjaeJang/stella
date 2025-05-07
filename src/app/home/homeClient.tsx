@@ -6,6 +6,7 @@ import Cards from "@/app/ui/home/cards";
 import { Suspense } from "react";
 import { Today, Work, People, Finance, Health, Mood } from "@/types/cardTypes";
 import { PropsUser, Info } from "@/types/types";
+import Link from "next/link";
 
 export default function HomeClient({
   user,
@@ -38,8 +39,8 @@ export default function HomeClient({
           }}
         />
         <div className="p-5">
-          <p className="text-xl font-thin text-black dark:text-white">
-            {`Hi ${user.name}, how's your day?`}
+          <p className="text-xl font-thin">
+            {`Hi ${info.name}, how's your day?`}
           </p>
         </div>
         <Buttons user={user} />
@@ -52,6 +53,17 @@ export default function HomeClient({
           health={health}
           mood={mood}
         />
+        <div className="mt-8 flex flex-col items-center gap-2">
+          <p className="text-sm text-gray-400 italic">
+            ✨ Curious about your compatibility?
+          </p>
+          <Link
+            href={`/compatibility/${user.id}`}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md transition-transform hover:scale-105 border-2 border-button"
+          >
+            Check Compatibility
+          </Link>
+        </div>
       </div>
     </Suspense>
   );

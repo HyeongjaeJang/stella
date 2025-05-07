@@ -35,7 +35,8 @@ export const authConfig = {
         nextUrl.pathname.startsWith("/finance") ||
         nextUrl.pathname.startsWith("/health") ||
         nextUrl.pathname.startsWith("/mood") ||
-        nextUrl.pathname.startsWith("/profile");
+        nextUrl.pathname.startsWith("/profile") ||
+        nextUrl.pathname.startsWith("/compatibility");
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false;
