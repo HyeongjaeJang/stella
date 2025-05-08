@@ -2,14 +2,19 @@
 
 import Header from "@/app/ui/home/header";
 import { Info } from "@/types/types";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import arrow from "../../../../public/backArrow.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import User1 from "@/app/ui/compatibility/user1";
+import {
+  CheckCompatibility,
+  CheckExcistCompatibility,
+} from "@/app/lib/actions";
 
 const CompatibilityClient = ({ info }: { info: Info }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [edit, setEdit] = useState(false);
   const [user2Data, setUser2Data] = useState<Partial<Info>>({
     name: "",
@@ -19,13 +24,25 @@ const CompatibilityClient = ({ info }: { info: Info }) => {
     city_country: "",
   });
 
-  const goBack = () => {
-    router.back();
-  };
+  useEffect(() => {
+    const checkCompatibility = async () => {
+      const redirectUrl = await CheckExcistCompatibility(info.id);
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkCompatibility();
+  }, [info.id, router]);
 
   const handleSubmit = async () => {
-    console.log("User 1 Data:", info);
-    console.log("User 2 Data:", user2Data);
+    await CheckCompatibility(info, user2Data);
+  };
+
+  const goBack = () => {
+    router.back();
   };
 
   return (
@@ -39,7 +56,12 @@ const CompatibilityClient = ({ info }: { info: Info }) => {
             email: info.email,
           }}
         />
-        {!edit ? (
+
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <p>Loading...</p>
+          </div>
+        ) : !edit ? (
           <div className="flex flex-col gap-2 p-4">
             <div className="flex gap-2">
               <Image

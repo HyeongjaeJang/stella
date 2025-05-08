@@ -3,6 +3,7 @@
 import client from "./db";
 import bcrypt from "bcryptjs";
 import {
+  getCompatibilityData,
   getWeeklyFinance,
   getWeeklyHealth,
   getWeeklyMood,
@@ -13,7 +14,7 @@ import {
 } from "./ai";
 import { AuthError } from "next-auth";
 import { auth, signIn, signOut } from "@/auth";
-import { userData } from "@/types/types";
+import { CompatibilityGeneratedData, Info, userData } from "@/types/types";
 import { startOfToday, isBefore, endOfWeek, startOfWeek } from "date-fns";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -779,3 +780,87 @@ export async function editUser(id: number, formData: FormData) {
     }
   }
 }
+
+export async function CheckCompatibility(user: Info, partner: Partial<Info>) {
+  try {
+    const compatibilityData = await getCompatibilityData(user, partner);
+
+    if (!compatibilityData) {
+      console.error("❌ No compatibility data generated.");
+      return;
+    }
+
+    const userId = user.id;
+
+    const {
+      overall_score,
+      overall_details,
+      user_zodiac,
+      partner_zodiac,
+      compatibility_data,
+    } = compatibilityData;
+
+    try {
+      await client.compatibility.create({
+        data: {
+          user_id: userId,
+          partner_name: partner.name || "Unknown",
+          overall_score,
+          overall_details,
+          user_zodiac,
+          partner_zodiac,
+          compatibility_data,
+        },
+      });
+
+      console.log("✅ Compatibility data saved successfully.");
+    } catch (dbError) {
+      if (dbError instanceof Prisma.PrismaClientKnownRequestError) {
+        console.error("💥 Prisma error:", dbError.code, dbError.message);
+      } else {
+        console.error("❌ Database error:", dbError);
+      }
+    }
+  } catch (error) {
+    console.error("❌ Error in CheckCompatibility function:", error);
+  }
+}
+
+export const CheckExcistCompatibility = async (
+  id: number,
+): Promise<string | null> => {
+  const compatibility = await client.compatibility.findFirst({
+    where: { user_id: id },
+  });
+
+  return compatibility ? `/compatibility/result/${id}` : null;
+};
+
+export const CompatibilityResult = async (id: number) => {
+  const compatibility = await client.compatibility.findFirst({
+    where: { user_id: id },
+  });
+
+  if (!compatibility) {
+    console.log("❌ Compatibility data not found");
+    return null;
+  }
+
+  try {
+    const parsedCompatibility: CompatibilityGeneratedData = {
+      overall_score: compatibility.overall_score,
+      overall_details: compatibility.overall_details,
+      user_zodiac:
+        compatibility.user_zodiac as CompatibilityGeneratedData["user_zodiac"],
+      partner_zodiac:
+        compatibility.partner_zodiac as CompatibilityGeneratedData["partner_zodiac"],
+      compatibility_data:
+        compatibility.compatibility_data as CompatibilityGeneratedData["compatibility_data"],
+    };
+
+    return parsedCompatibility;
+  } catch (error) {
+    console.error("❌ Compatibility data parsing error:", error);
+    return null;
+  }
+};

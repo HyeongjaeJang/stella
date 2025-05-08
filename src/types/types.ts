@@ -162,3 +162,40 @@ export type Info = {
   createdAt: Date | null;
   updatedAt: Date | null;
 };
+
+export type CompatibilityGeneratedData = {
+  overall_score: number;
+  overall_details: string;
+
+  user_zodiac: ZodiacDetails;
+  partner_zodiac: ZodiacDetails;
+
+  compatibility_data: CompatibilityData;
+};
+
+export type ZodiacDetails = {
+  sun: ZodiacSignDetails;
+  moon: ZodiacSignDetails;
+  mercury: ZodiacSignDetails;
+  venus: ZodiacSignDetails;
+  mars: ZodiacSignDetails;
+};
+
+export type ZodiacSignDetails = {
+  sign: string;
+  score: number;
+  details: string;
+};
+
+export type CompatibilityData = {
+  sun: CompatibilityCategory;
+  moon: CompatibilityCategory;
+  mercury: CompatibilityCategory;
+  venus: CompatibilityCategory;
+  mars: CompatibilityCategory;
+};
+
+export type CompatibilityCategory = {
+  score: number;
+  details: string;
+};

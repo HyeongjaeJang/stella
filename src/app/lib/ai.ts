@@ -12,6 +12,8 @@ import {
   ZodiacWeeklyFinanceType,
   ZodiacWeeklyHealthType,
   ZodiacWeeklyMoodType,
+  Info,
+  CompatibilityGeneratedData,
 } from "@/types/types";
 
 const client = new OpenAi({ apiKey: process.env.OPENAI_API_KEY });
@@ -405,5 +407,97 @@ Return only JSON:
     return json;
   } catch (error) {
     console.error("❌ Error fetching weekly work data:", error);
+  }
+};
+
+export const getCompatibilityData = async (
+  user: Info,
+  partner: Partial<Info>,
+): Promise<CompatibilityGeneratedData | null> => {
+  const prompt = `
+You are an expert astrologer specializing in relationship compatibility analysis.
+
+Analyze the compatibility between two individuals based on their astrological profiles. 
+Provide detailed yet concise insights across the following categories:
+
+1. 🌞 Sun Sign Compatibility:
+   - Assess their core personalities, life goals, and general compatibility based on their Sun signs.
+
+2. 🌙 Moon Sign Compatibility:
+   - Compare their emotional nature, instinctual reactions, and how they handle feelings.
+
+3. 🗣 Mercury Sign Compatibility:
+   - Examine their communication styles, thought processes, and how they connect intellectually.
+
+4. 💘 Venus Sign Compatibility:
+   - Assess their approach to love, affection, and romantic inclinations.
+
+5. 🔥 Mars Sign Compatibility:
+   - Evaluate their physical energy, desires, and potential conflicts.
+
+For each category, provide a score (1-10) and a brief description of the compatibility. 
+Also, include an overall compatibility score (1-100) with a summary sentence.
+
+Use the following structure for the response:
+
+{
+  "overall_score": ...,
+  "overall_details": "...",
+  "user_zodiac": {
+    "sun": { "sign": "...", "score": ..., "details": "..." },
+    "moon": { "sign": "...", "score": ..., "details": "..." },
+    "mercury": { "sign": "...", "score": ..., "details": "..." },
+    "venus": { "sign": "...", "score": ..., "details": "..." },
+    "mars": { "sign": "...", "score": ..., "details": "..." }
+  },
+  "partner_zodiac": {
+    "sun": { "sign": "...", "score": ..., "details": "..." },
+    "moon": { "sign": "...", "score": ..., "details": "..." },
+    "mercury": { "sign": "...", "score": ..., "details": "..." },
+    "venus": { "sign": "...", "score": ..., "details": "..." },
+    "mars": { "sign": "...", "score": ..., "details": "..." }
+  },
+  "compatibility_data": {
+    "sun": { "score": ..., "details": "..." },
+    "moon": { "score": ..., "details": "..." },
+    "mercury": { "score": ..., "details": "..." },
+    "venus": { "score": ..., "details": "..." },
+    "mars": { "score": ..., "details": "..." }
+  }
+}
+
+User Information:
+- Name: ${user.name}
+- Birth Date: ${user.birth_date?.toISOString().slice(0, 10)}
+- Birth Time: ${user.birth_time?.toISOString().split("T")[1].slice(0, 5)}
+- Gender: ${user.gender}
+- City/Country: ${user.city_country}
+- Zodiac Sign: ${user.z_sign}
+
+Partner Information:
+- Name: ${partner.name}
+- Birth Date: ${partner.birth_date}
+- Birth Time: ${partner.birth_time}
+- Gender: ${partner.gender}
+- City/Country: ${partner.city_country}
+- Zodiac Sign: ${partner.z_sign}
+
+Return only the JSON object as described. Do not include any additional explanations or formatting.
+`;
+
+  try {
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const raw = completion.choices[0].message.content;
+    const cleaned = raw?.replace(/```json\s*|```/g, "").trim();
+
+    const json = JSON.parse(cleaned ?? "{}");
+    return json;
+  } catch (error) {
+    console.error("❌ Error fetching compatibility data:", error);
+    return null;
   }
 };
