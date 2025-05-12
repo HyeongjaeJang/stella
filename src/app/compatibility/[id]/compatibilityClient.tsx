@@ -39,10 +39,11 @@ const CompatibilityClient = ({ info }: { info: Info }) => {
 
   const handleSubmit = async () => {
     await CheckCompatibility(info, user2Data);
+    router.push(`/compatibility/result/${info.id}`);
   };
 
   const goBack = () => {
-    router.back();
+    router.push("/home");
   };
 
   return (
@@ -71,6 +72,7 @@ const CompatibilityClient = ({ info }: { info: Info }) => {
                 height={10}
                 priority
                 onClick={() => goBack()}
+                className="cursor-pointer dark:invert"
               />
               <h2 className="text-2xl font-extralight">Your partner profile</h2>
             </div>

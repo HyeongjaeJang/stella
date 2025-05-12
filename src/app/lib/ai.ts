@@ -435,7 +435,7 @@ Provide detailed yet concise insights across the following categories:
 5. 🔥 Mars Sign Compatibility:
    - Evaluate their physical energy, desires, and potential conflicts.
 
-For each category, provide a score (1-10) and a brief description of the compatibility. 
+For each category, provide a score (1-10) and at least detailed three-sentence description of the compatibility. 
 Also, include an overall compatibility score (1-100) with a summary sentence.
 
 Use the following structure for the response:

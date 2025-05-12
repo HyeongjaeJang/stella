@@ -28,7 +28,9 @@ const Card1 = ({ z_sign, today }: { z_sign: string | null; today: Today }) => {
             </div>
             <div className="flex justify-center items-center gap-2">
               <div>Color:</div>
-              <div className="font-bold">{today.color}</div>
+              <div className="font-bold">
+                {today.color?.charAt(0).toUpperCase() + today.color!.slice(1)}
+              </div>
             </div>
             <div className="flex flex-col justify-center items-center gap-2 w-full">
               <div className="flex gap-2">

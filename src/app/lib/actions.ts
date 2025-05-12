@@ -864,3 +864,16 @@ export const CompatibilityResult = async (id: number) => {
     return null;
   }
 };
+
+export const ResetCompatibility = async (id: number) => {
+  try {
+    await client.compatibility.delete({
+      where: { user_id: id },
+    });
+
+    return `/compatibility/${id}`;
+  } catch (error) {
+    console.error("Error resetting compatibility data:", error);
+    return null;
+  }
+};

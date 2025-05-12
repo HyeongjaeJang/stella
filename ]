@@ -1,0 +1,68 @@
+"use client";
+import Header from "@/app/ui/home/header";
+import { CompatibilityGeneratedData, Info } from "@/types/types";
+import React, { Suspense } from "react";
+import Image from "next/image";
+import BackArrow from "../../../../../../public/backArrow.svg";
+import { useRouter } from "next/navigation";
+
+const ZSignClient = ({
+  info,
+  comp,
+  name,
+}: {
+  info: Info;
+  comp: CompatibilityGeneratedData;
+  name: string;
+}) => {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
+
+  console.log(comp.user_zodiac.moon.sign);
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex flex-col h-screen">
+        <Header
+          user={{
+            id: info.id.toString(),
+            name: info.name,
+            z_sign: info.z_sign,
+            email: info.email,
+          }}
+        />
+        <div className="flex flex-col gap-4 p-4">
+          <div className="flex gap-2">
+            <BackArrow
+              className="cursor-pointer fill-black text-black dark:text-white"
+              width={24}
+              height={24}
+              onClick={goBack}
+            />
+            <h1 className="text-2xl font-extralight">{`${name}'s Compatibility`}</h1>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between bg-button/50 dark:bg-white/10 p-2 rounded-lg items-center gap-5 border-2 border-button/30">
+              <div className="flex flex-col gap-2">
+                <Image
+                  src={`/${comp.user_zodiac.sun.sign}.png`}
+                  alt="user_zodiac"
+                  width={120}
+                  height={120}
+                />
+                <p className="text-sm font-light text-white/30">
+                  {"User's Zodiac Sign"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Suspense>
+  );
+};
+
+export default ZSignClient;
