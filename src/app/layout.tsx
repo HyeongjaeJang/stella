@@ -21,11 +21,43 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex justify-center items-center w-full px-10">
+            <div className="flex flex-col gap-2 justify-start items-start w-full overflow-hidden">
+              <h1 className="text-3xl font-bold mb-3 text-button">Stella</h1>
+              <p>Unlock Your Stellar Potential</p>
+              <li className="list-disc">
+                Explore your zodiac sign's traits, compatibility, and
+                personalized daily guidance with Stella.
+              </li>
+              <ul className="flex flex-col gap-2 mt-3">
+                Powered by AI, Stella delivers tailored insights based on your
+                zodiac profile, including:
+                <li className="list-disc ml-5">
+                  Daily Horoscope Updates – Start each day with a fresh
+                  perspective on your love life, career, and health.
+                </li>
+                <li className="list-disc ml-5">
+                  Compatibility Analysis – Discover how well you align with
+                  friends, partners, and colleagues.
+                </li>
+                <li className="list-disc ml-5">
+                  AI-Generated Insights – Receive targeted advice and actionable
+                  tips based on your current astrological trends.
+                </li>
+                <li className="list-disc ml-5">
+                  Personalized Forecasts – Navigate your week with confidence,
+                  guided by AI-driven predictions.
+                </li>
+              </ul>
+            </div>
+            <div className="min-w-[390px] max-w-[390px] h-full overflow-y-scroll scrollbar-hide">
+              {children}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>
