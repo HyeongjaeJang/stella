@@ -25,36 +25,42 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex justify-center items-center w-full px-10">
+          <div className="flex justify-center items-center w-full px-32">
             <div className="flex flex-col gap-2 justify-start items-start w-full overflow-hidden">
               <h1 className="text-3xl font-bold mb-3 text-button">Stella</h1>
-              <p>Unlock Your Stellar Potential</p>
-              <li className="list-disc">
-                Explore your zodiac sign's traits, compatibility, and
-                personalized daily guidance with Stella.
-              </li>
-              <ul className="flex flex-col gap-2 mt-3">
-                Powered by AI, Stella delivers tailored insights based on your
-                zodiac profile, including:
-                <li className="list-disc ml-5">
-                  Daily Horoscope Updates – Start each day with a fresh
-                  perspective on your love life, career, and health.
-                </li>
-                <li className="list-disc ml-5">
-                  Compatibility Analysis – Discover how well you align with
-                  friends, partners, and colleagues.
-                </li>
-                <li className="list-disc ml-5">
-                  AI-Generated Insights – Receive targeted advice and actionable
-                  tips based on your current astrological trends.
-                </li>
-                <li className="list-disc ml-5">
-                  Personalized Forecasts – Navigate your week with confidence,
-                  guided by AI-driven predictions.
-                </li>
-              </ul>
+              <p className="text-lg font-light text-gray-400 dark:text-white/70 mb-4">
+                Your Cosmic Guide to Love, Life, and Connection
+              </p>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-button">
+                    Discover
+                  </h2>
+                  <p className="text-sm text-gray-400/90 dark:text-white/60">
+                    Start your day with personalized AI-generated horoscopes and
+                    insights tailored to your zodiac sign.
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-semibold text-button">Connect</h2>
+                  <p className="text-sm text-gray-400/90 dark:text-white/60">
+                    Dive into compatibility reports to understand how your
+                    relationships align and how to nurture them.
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className="text-xl font-semibold text-button">Empower</h2>
+                  <p className="text-sm text-gray-400/90 dark:text-white/60">
+                    Navigate life's challenges with daily guidance, powerful
+                    insights, and actionable tips to stay aligned with your
+                    cosmic path.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="min-w-[390px] max-w-[390px] h-full overflow-y-scroll scrollbar-hide">
+            <div className="min-w-[390px] max-w-[390px] h-full overflow-y-scroll scrollbar-hide border-l-2 border-gray-300 dark:border-white/5">
               {children}
             </div>
           </div>
