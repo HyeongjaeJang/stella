@@ -69,8 +69,6 @@ const ZSignClient = ({
     }
   };
 
-  console.log(comp);
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col h-screen">

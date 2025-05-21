@@ -11,6 +11,7 @@ import {
   CheckCompatibility,
   CheckExcistCompatibility,
 } from "@/app/lib/actions";
+import Load from "@/app/ui/load";
 
 const CompatibilityClient = ({ info }: { info: Info }) => {
   const router = useRouter();
@@ -60,7 +61,7 @@ const CompatibilityClient = ({ info }: { info: Info }) => {
 
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
-            <p>Loading...</p>
+            <Load />
           </div>
         ) : !edit ? (
           <div className="flex flex-col gap-2 p-4">
