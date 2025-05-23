@@ -4,7 +4,7 @@ import { getToday, getUser, getUserInfo } from "@/app/lib/actions";
 import ProfileClient from "./profileClient";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: PageProps) => {

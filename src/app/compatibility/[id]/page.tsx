@@ -3,7 +3,7 @@ import React from "react";
 import CompatibilityClient from "./compatibilityClient";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: Props) => {

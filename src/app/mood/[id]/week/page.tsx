@@ -2,7 +2,7 @@ import { getWeeklyMoodData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyMoodClient from "./weeklyMoodClient";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: PageProps) => {

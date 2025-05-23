@@ -3,7 +3,7 @@ import React from "react";
 import ResultClient from "./resultClient";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: Props) => {

@@ -2,7 +2,7 @@ import { CompatibilityResult, getUser, getUserInfo } from "@/app/lib/actions";
 import ZSignClient from "./zSignClient";
 
 type Props = {
-  params: { id: string; name: string };
+  params: Promise<{ id: string; name: string }>;
 };
 
 const Page = async ({ params }: Props) => {

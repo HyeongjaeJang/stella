@@ -53,9 +53,9 @@ export default function RootLayout({
                 <div>
                   <h2 className="text-xl font-semibold text-button">Empower</h2>
                   <p className="text-sm text-gray-400/90 dark:text-white/60">
-                    Navigate life's challenges with daily guidance, powerful
-                    insights, and actionable tips to stay aligned with your
-                    cosmic path.
+                    Navigate life&apos;s challenges with daily guidance,
+                    powerful insights, and actionable tips to stay aligned with
+                    your cosmic path.
                   </p>
                 </div>
               </div>

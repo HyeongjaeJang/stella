@@ -2,7 +2,7 @@ import { getWeeklyPeopleData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyPeopleClient from "./weeklyPeopleClient";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: PageProps) => {

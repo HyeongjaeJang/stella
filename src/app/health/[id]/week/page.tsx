@@ -2,7 +2,7 @@ import { getWeeklyHealthData, getUser, getUserInfo } from "@/app/lib/actions";
 import WeeklyHealthClient from "./weeklyHealthClient";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Page = async ({ params }: PageProps) => {

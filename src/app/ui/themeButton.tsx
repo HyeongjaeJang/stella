@@ -17,7 +17,7 @@ export function ModeToggle() {
 
   useEffect(() => {
     setTheme("dark");
-  }, []);
+  }, [setTheme]);
 
   return (
     <div className="absolute right-8 bottom-10">
