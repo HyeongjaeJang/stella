@@ -12,16 +12,13 @@ export const Logo = ({ complete }: { complete: () => void }) => {
 
   return (
     <motion.div
-      animate={start ? { y: -180 } : { y: 0 }}
+      animate={start ? { y: -30 } : {}}
+      initial={{ y: 40 }}
       transition={{ duration: 1, ease: "easeInOut" }}
       onAnimationComplete={complete}
-      style={{
-        position: "absolute",
-        top: "35%",
-        left: "10%",
-      }}
+      className="flex justify-center items-center"
     >
-      <Image src="/Stella.png" alt="logo" width={300} height={300} />
+      <Image src="/Stella.png" alt="logo" width={200} height={250} />
     </motion.div>
   );
 };

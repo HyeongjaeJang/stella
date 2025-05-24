@@ -1,0 +1,216 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int                  @id @default(autoincrement()) @map("id") @db.UnsignedInt
+  name                String               @db.VarChar(100)
+  email               String               @unique(map: "users_email_unique") @db.VarChar(255)
+  password            String               @db.VarChar(255)
+  birth_date          DateTime?            @db.Date
+  birth_time          DateTime?            @db.Time(0)
+  gender              String?              @db.VarChar(50)
+  city_country        String?              @db.VarChar(255)
+  z_sign              String?              @db.VarChar(50)
+  createdAt           DateTime?            @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt           DateTime?            @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  today               today?
+  todays_finance      todays_finance?
+  todays_health       todays_health?
+  todays_mood         todays_mood?
+  todays_relationship todays_relationship?
+  todays_work         todays_work?
+  weekly_work         weekly_work?
+  weekly_people       weekly_people?
+  weekly_finance      weekly_finance?
+  weekly_health       weekly_health?
+  weekly_mood         weekly_mood?
+  compatibility       compatibility?
+
+  @@map("users")
+}
+
+model today {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id     Int       @unique @db.UnsignedInt
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  updated_at  DateTime? @default(now()) @db.Timestamp(0)
+  number      Int?
+  color       String?   @db.VarChar(50)
+  item        String?   @db.VarChar(255)
+  total_score Int?
+  text        String?   @db.Text
+  users       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "today_user_id_foreign")
+
+  @@index([user_id], map: "today_user_id_foreign")
+}
+
+model todays_finance {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  income     Int?
+  expense    Int?
+  invest     Int?
+  text       String?   @db.Text
+  users      User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "todays_finance_user_id_foreign")
+
+  @@index([user_id], map: "todays_finance_user_id_foreign")
+}
+
+model todays_health {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  state      String?   @db.VarChar(100)
+  activity   String?   @db.VarChar(100)
+  warning    String?   @db.VarChar(100)
+  text       String?   @db.Text
+  users      User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "todays_health_user_id_foreign")
+
+  @@index([user_id], map: "todays_health_user_id_foreign")
+}
+
+model todays_mood {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  mood       String?   @db.VarChar(100)
+  energy     String?   @db.VarChar(100)
+  stress     String?   @db.VarChar(100)
+  text       String?   @db.Text
+  users      User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "todays_mood_user_id_foreign")
+
+  @@index([user_id], map: "todays_mood_user_id_foreign")
+}
+
+model todays_relationship {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int       @unique @db.UnsignedInt
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+  love       String?   @db.VarChar(100)
+  work       String?   @db.VarChar(100)
+  friend     String?   @db.VarChar(100)
+  family     String?   @db.VarChar(100)
+  text       String?   @db.Text
+  users      User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "todays_relationship_user_id_foreign")
+
+  @@index([user_id], map: "todays_relationship_user_id_foreign")
+}
+
+model todays_work {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  user_id      Int       @unique @db.UnsignedInt
+  created_at   DateTime? @default(now()) @db.Timestamp(0)
+  updated_at   DateTime? @default(now()) @db.Timestamp(0)
+  productivity String?   @db.VarChar(100)
+  creativity   String?   @db.VarChar(100)
+  challenge    String?   @db.VarChar(100)
+  text         String?   @db.Text
+  users        User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "todays_work_user_id_foreign")
+
+  @@index([user_id], map: "todays_work_user_id_foreign")
+}
+
+model weekly_work {
+  id            Int      @id @default(autoincrement()) @db.UnsignedInt
+  user_id       Int      @unique @db.UnsignedInt
+  week_start    DateTime
+  week_end      DateTime
+  total_score   Int
+  summary       String?  @db.VarChar(999)
+  productivity  Int
+  creativity    Int
+  challenge     Int
+  energy        Int
+  days_analysis Json
+  advice        String   @db.VarChar(999)
+  users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_work_user_id_foreign")
+}
+
+model weekly_people {
+  id            Int      @id @default(autoincrement()) @db.UnsignedInt
+  user_id       Int      @unique @db.UnsignedInt
+  week_start    DateTime
+  week_end      DateTime
+  total_score   Int
+  summary       String?  @db.VarChar(999)
+  love          Int
+  friendship    Int
+  family        Int
+  work          Int
+  days_analysis Json
+  advice        String   @db.VarChar(999)
+  users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_people_user_id_foreign")
+}
+
+model weekly_finance {
+  id            Int      @id @default(autoincrement())
+  user_id       Int      @unique @db.UnsignedInt
+  week_start    DateTime
+  week_end      DateTime
+  total_score   Int
+  summary       String?  @db.VarChar(999)
+  income        Int
+  expense       Int
+  invest        Int
+  days_analysis Json
+  advice        String   @db.VarChar(999)
+  users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_finance_user_id_foreign")
+}
+
+model weekly_health {
+  id            Int      @id @default(autoincrement())
+  user_id       Int      @unique @db.UnsignedInt
+  week_start    DateTime
+  week_end      DateTime
+  total_score   Int
+  summary       String?  @db.VarChar(999)
+  state         Int
+  activity      Int
+  warning       Int
+  days_analysis Json
+  advice        String   @db.VarChar(999)
+  users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_health_user_id_foreign")
+}
+
+model weekly_mood {
+  id            Int      @id @default(autoincrement())
+  user_id       Int      @unique @db.UnsignedInt
+  week_start    DateTime
+  week_end      DateTime
+  total_score   Int
+  summary       String?  @db.VarChar(999)
+  mood          Int
+  energy        Int
+  stress        Int
+  days_analysis Json
+  advice        String   @db.VarChar(999)
+  users         User?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "weekly_mood_user_id_foreign")
+}
+
+model compatibility {
+  id              Int    @id @default(autoincrement())
+  user_id         Int    @unique @db.UnsignedInt
+  partner_name    String @db.VarChar(100)
+  overall_score   Int
+  overall_details String @db.Text
+
+  user_zodiac        Json
+  partner_zodiac     Json
+  compatibility_data Json
+
+  users User? @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "compatibility_user_id_foreign")
+
+  @@index([user_id], map: "compatibility_user_id_foreign_idx")
+}
