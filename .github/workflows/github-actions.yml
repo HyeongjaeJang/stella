@@ -1,0 +1,14 @@
+name: GitHub Actions Deployment
+run-name: ${{ github.actor }} is deploying GitHub Actions 🚀
+on:
+  push:
+    branches:
+      - main
+
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4.2.2
+  - name: Change executable mode
+    run: sudo chmod +x run.sh
+  - name: Run deployment script
+    run: ./run.sh

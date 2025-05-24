@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "generate": "prisma generate --schema=./src/prisma/schema.prisma",
     "migrate": "prisma migrate dev --name init --schema=./src/prisma/schema.prisma"
   },
   "dependencies": {

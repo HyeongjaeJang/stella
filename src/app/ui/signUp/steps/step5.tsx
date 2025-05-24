@@ -23,7 +23,9 @@ const Step5 = ({
   const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
-    getCountries().then((data) => setCountries(data));
+    getCountries().then((data) => {
+      setCountries(data);
+    });
   }, []);
 
   const handleCountryChange = async (
