@@ -8,8 +8,8 @@ set -x
 
 # Step 1: Build Docker Compose images
 echo "🐳 Building Docker images..."
-docker-compose build
+docker compose build
 
 # Step 2: Start containers (detached)
 echo "🚀 Starting containers..."
-docker-compose up -d
+docker compose up -d
