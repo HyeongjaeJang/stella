@@ -10,7 +10,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
-      - name: Change executable mode
-        run: sudo chmod +x run.sh
-      - name: Run deployment script
-        run: ./run.sh
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.JAY_SERVER_SECRET_KEY }}
+      - name: Copy project to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.JAY_SERVER_HOST }} "mkdir -p ~/stella-app"
+          rsync -avz --exclude=node_modules --exclude=.git ./ ubuntu@${{ secrets.JAY_SERVER_HOST }}:~/stella-app
+
+      - name: Run deploy script remotely
+        run: |
+          ssh ubuntu@${{ secrets.JAY_SERVER_HOST }} << 'EOF'
+            cd ~/stella-app
+
+            # Create .env on the server
+            cat <<EOT > .env
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
+            EOT
+
+            sudo chmod +x run.sh
+            ./run.sh
