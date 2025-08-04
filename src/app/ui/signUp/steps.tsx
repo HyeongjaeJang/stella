@@ -39,7 +39,7 @@ export default function Steps({ action }: { action: () => void }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white/30 backdrop-blur-sm z-50 p-5">
-      <div className="relative w-full p-6 bg-white shadow-lg rounded-lg text-center text-black">
+      <div className="relative w-full max-w-md p-6 bg-white shadow-lg rounded-lg text-center text-black">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <Step1 form={form} action={handleChange} nextStep={nextStep} />

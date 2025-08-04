@@ -5,6 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123123123
+      MYSQL_DATABASE: stella
     ports:
       - 3306:3306
     networks:
@@ -17,14 +18,11 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      args:
-        DATABASE_URL: ${DATABASE_URL}
-        OPENAI_API_KEY: ${OPENAI_API_KEY}
-        AUTH_SECRET: ${AUTH_SECRET}
-
     restart: always
     ports:
-      - 3000:3000
+      - "3000:3000"
+    env_file:
+      - .env
     networks:
       - my_network
 
