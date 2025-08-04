@@ -8,6 +8,7 @@ type JWTUser = {
 };
 
 export const authConfig = {
+  trustHost: true,
   pages: {
     signIn: "/",
   },
